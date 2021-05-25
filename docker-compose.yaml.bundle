@@ -42,7 +42,7 @@ x-airflow-common:
   image: ${AIRFLOW_IMAGE_NAME:-myairflow}
   build:
     context: .
-    dockerFile: Dockerfile
+    dockerfile: Dockerfile
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
