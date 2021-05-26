@@ -2,16 +2,36 @@
 
 ## Instruction:
 
-### Celery Executer. Budnle (with PostgreSQL and Redis)
-
-`docker-compose -f docker-compose.yaml.bundle up -d --build`
-
-### Celery Executer. Without PostgreSQL and Redis
-
-If PostgreSQL and Redis already exists, edit docker-compose.yaml file. Change AIRFLOW__CORE__SQL_ALCHEMY_CONN, AIRFLOW__CELERY__RESULT_BACKEND and AIRFLOW__CELERY__BROKER_URL values.
-
-`docker-compose -f docker-compose.yaml up -d --build`
-
 ### Local Executor. Bundle (with PostgreSQL only)
 
 `docker-compose -f docker-compose.yaml.localexec.bundle up -d --build`
+
+If you want to override some params, see too the section environment in docker-compose.yaml.localexec.bundle and run:
+
+`export BASE_URL=http://your_domain:8080/`
+
+`docker-compose -f docker-compose.yaml.localexec.bundle up -d --build`
+
+### Attention!
+
+Full list of variables avalable for overriding via export:
+
+POSTGRE_USER
+
+POSTGRE_PASS
+
+POSTGRE_DB
+
+_AIRFLOW_WWW_USER_USERNAME
+
+_AIRFLOW_WWW_USER_PASSWORD
+
+ENDPOINT_URL
+
+BASE_URL
+
+DAGS_DIR
+
+SCRIPTS_DIR
+
+LOGS_DIR

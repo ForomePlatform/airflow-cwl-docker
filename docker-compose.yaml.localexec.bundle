@@ -61,6 +61,8 @@ services:
       _AIRFLOW_WWW_USER_CREATE: 'true'
       _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
       _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow} 
+      AIRFLOW__CLI__ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:8080/}
+      AIRFLOW__WEBSERVER__BASE_URL: ${BASE_URL:-http://localhost:8080}
     volumes:
       - ${DAGS_DIR:-./dags}:/opt/airflow/dags
       - ${SCRIPTS_DIR:-./scripts}:/opt/airflow/scripts
