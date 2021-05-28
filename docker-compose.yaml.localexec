@@ -8,7 +8,6 @@ services:
     restart: always
     user: root
     depends_on:
-      - postgres
       - webserver
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor      
@@ -37,8 +36,6 @@ services:
     container_name: webserver
     restart: always
     user: root
-    depends_on:
-      - postgres
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRE_USER:-airflow}:${POSTGRE_PASS:-airflow}@${POSTGRE_SERVER:-postgres}/${POSTGRE_DB:-airflow}
