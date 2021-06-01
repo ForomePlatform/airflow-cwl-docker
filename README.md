@@ -8,7 +8,7 @@
 
 If you want to override some params, see too the section environment in docker-compose.yaml.localexec.bundle and run:
 
-`export BASE_URL=http://your_domain:8080/`
+`export BASE_URL=http://your_domain:8080`
 
 `docker-compose -f docker-compose.yaml.localexec.bundle up -d --build`
 
@@ -27,6 +27,8 @@ POSTGRE_SERVER (use only not bundle)
 _AIRFLOW_WWW_USER_USERNAME
 
 _AIRFLOW_WWW_USER_PASSWORD
+
+WEB_SERVER_PORT
 
 ENDPOINT_URL
 
