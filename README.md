@@ -39,3 +39,18 @@ DAGS_DIR
 SCRIPTS_DIR
 
 LOGS_DIR
+
+HTTP_PROXY
+
+HTTPS_PROXY
+
+### Attention #2 If you want to use proxy for installing software:
+
+If you use proxy server on your PC (Linux-like OS), you have overrided HTTP_PROXY and HTTPS_PROXY environment variables. You can put your variables to build stage:
+
+`docker-compose -f docker-compose.yaml.localexec build --build-arg HTTPS_PROXY_SERVER=$HTTPS_PROXY --build-arg HTTP_PROXY_SERVER=$HTTP_PROXY`
+
+And then:
+
+`docker-compose -f docker-compose.yaml.localexec up -d`
+
