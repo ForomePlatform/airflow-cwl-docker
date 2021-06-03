@@ -1,3 +1,3 @@
 #!/bin/sh
 
-pip3 install cwl-airflow.zip
+pip3 install /cwl-airflow.zip
