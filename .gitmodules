@@ -1,0 +1,3 @@
+[submodule "cwl-airflow"]
+	path = cwl-airflow
+	url = git@github.com:Barski-lab/cwl-airflow.git

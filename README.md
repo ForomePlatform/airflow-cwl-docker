@@ -2,6 +2,16 @@
 
 ## Instruction:
 
+### Attention #0!
+
+If you have some limits of internet in containers:
+
+1. Clone this repo.
+
+2. Execute command:
+
+`git submodule update --init --recursive`
+
 ### Local Executor. Bundle (with PostgreSQL only)
 
 `docker-compose -f docker-compose.yaml.localexec.bundle up -d --build`
@@ -43,14 +53,3 @@ LOGS_DIR
 HTTP_PROXY
 
 HTTPS_PROXY
-
-### Attention #2 If you want to use proxy for installing software:
-
-If you use proxy server on your PC (Linux-like OS), you have overrided HTTP_PROXY and HTTPS_PROXY environment variables. You can put your variables to build stage:
-
-`docker-compose -f docker-compose.yaml.localexec build --build-arg HTTPS_PROXY_SERVER=$HTTPS_PROXY --build-arg HTTP_PROXY_SERVER=$HTTP_PROXY`
-
-And then:
-
-`docker-compose -f docker-compose.yaml.localexec up -d`
-
