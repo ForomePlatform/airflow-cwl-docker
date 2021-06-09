@@ -20,8 +20,9 @@ If you have some limits of internet in containers:
 
 2. Configure authentification in pg_hba.conf
 
-`host    all             all             172.18.0.77/32          password
-host    all             all             172.18.0.99/32          password`
+`host    all             all             172.18.0.77/32          password`
+
+`host    all             all             172.18.0.99/32          password`
 
 3. Configure listening address in postgresql.conf and restart PostgreSQL
 
