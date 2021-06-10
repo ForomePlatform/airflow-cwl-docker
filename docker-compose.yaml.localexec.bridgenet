@@ -20,15 +20,12 @@ services:
       AIRFLOW__SCHEDULER__SCHEDULER_HEARTBEAT_SEC: 10
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
       AIRFLOW__CORE__LOAD_EXAMPLES: 'true'
+      NO_PROXY: localhost,127.0.0.1,8.8.8.8,google.com,security.debian.org,repo.mysql.com,deb.debian.org,172.17.0.1,webserver,scheduler
+      no_proxy: localhost,127.0.0.1,8.8.8.8,google.com,security.debian.org,repo.mysql.com,deb.debian.org,172.17.0.1,webserver,scheduler
     volumes:
       - ${DAGS_DIR:-./dags}:/opt/airflow/dags
       - ${LOGS_DIR:-./airflow-logs}:/opt/airflow/logs
     command: scheduler
-    healthcheck:
-      test: ["CMD", "curl", "--fail", "http://webserver:${WEB_SERVER_PORT:-8080}/health"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
     network_mode: bridge
   
   webserver:
@@ -55,6 +52,8 @@ services:
       AIRFLOW__WEBSERVER__WEB_SERVER_PORT: ${WEB_SERVER_PORT:-8080}
       AIRFLOW__CLI__ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:${AIRFLOW__WEBSERVER__WEB_SERVER_PORT}}
       AIRFLOW__WEBSERVER__BASE_URL: ${BASE_URL:-http://localhost:${AIRFLOW__WEBSERVER__WEB_SERVER_PORT}}
+      NO_PROXY: localhost,127.0.0.1,8.8.8.8,google.com,security.debian.org,repo.mysql.com,deb.debian.org,172.17.0.1,webserver,scheduler
+      no_proxy: localhost,127.0.0.1,8.8.8.8,google.com,security.debian.org,repo.mysql.com,deb.debian.org,172.17.0.1,webserver,scheduler
     volumes:
       - ${DAGS_DIR:-./dags}:/opt/airflow/dags
       - ${SCRIPTS_DIR:-./scripts}:/opt/airflow/scripts
