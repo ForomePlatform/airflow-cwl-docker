@@ -3,3 +3,4 @@
 cd /cwl-airflow
 sed -ie 's#apache-airflow==2.0.1#apache-airflow==2.0.2#g' setup.py
 pip3 install .
+pip install --upgrade apache-airflow-providers-google
