@@ -11,6 +11,7 @@ services:
     depends_on:
       - webserver
     environment:
+      environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor      
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRE_USER:-airflow}:${POSTGRE_PASS:-airflow}@${POSTGRE_SERVER:-postgres}/${POSTGRE_DB:-airflow}
       AIRFLOW__CORE__FERNET_KEY:
@@ -20,11 +21,16 @@ services:
       AIRFLOW__SCHEDULER__SCHEDULER_HEARTBEAT_SEC: 10
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
       AIRFLOW__CORE__LOAD_EXAMPLES: 'true'
+      AIRFLOW__CORE__DAGS_FOLDER: ${DAGS_FOLDER:-/opt/airflow/dags}
       NO_PROXY: localhost,127.0.0.1,8.8.8.8,google.com,security.debian.org,repo.mysql.com,deb.debian.org,172.17.0.1,webserver,scheduler
       no_proxy: localhost,127.0.0.1,8.8.8.8,google.com,security.debian.org,repo.mysql.com,deb.debian.org,172.17.0.1,webserver,scheduler
     volumes:
+      - ${PROJECT_DIR:-./project}:/opt/airflow/project
       - ${DAGS_DIR:-./dags}:/opt/airflow/dags
       - ${LOGS_DIR:-./airflow-logs}:/opt/airflow/logs
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
     command: scheduler
     network_mode: bridge
   
@@ -45,24 +51,28 @@ services:
       AIRFLOW__SCHEDULER__SCHEDULER_HEARTBEAT_SEC: 10
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
       AIRFLOW__CORE__LOAD_EXAMPLES: 'true'
+      AIRFLOW__CORE__DAGS_FOLDER: ${DAGS_FOLDER:-/opt/airflow/dags}
       _AIRFLOW_DB_UPGRADE: 'true'
       _AIRFLOW_WWW_USER_CREATE: 'true'
       _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
       _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow} 
-      AIRFLOW__WEBSERVER__WEB_SERVER_PORT: ${WEB_SERVER_PORT:-8080}
-      AIRFLOW__CLI__ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:${WEB_SERVER_PORT:-8080}}
-      AIRFLOW__WEBSERVER__BASE_URL: ${BASE_URL:-http://localhost:${WEB_SERVER_PORT:-8080}}
+      #AIRFLOW__CLI__ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:}${WEB_SERVER_PORT:-8080}
+      AIRFLOW__WEBSERVER__BASE_URL: ${BASE_URL:-http://localhost:8080}
       NO_PROXY: localhost,127.0.0.1,8.8.8.8,google.com,security.debian.org,repo.mysql.com,deb.debian.org,172.17.0.1,webserver,scheduler
       no_proxy: localhost,127.0.0.1,8.8.8.8,google.com,security.debian.org,repo.mysql.com,deb.debian.org,172.17.0.1,webserver,scheduler
     volumes:
+      - ${PROJECT_DIR:-./project}:/opt/airflow/project
       - ${DAGS_DIR:-./dags}:/opt/airflow/dags
       - ${SCRIPTS_DIR:-./scripts}:/opt/airflow/scripts
       - ${LOGS_DIR:-./airflow-logs}:/opt/airflow/logs
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
     ports:
-      - "${WEB_SERVER_PORT:-8080}:${WEB_SERVER_PORT:-8080}"
+      - "${WEB_SERVER_PORT:-8080}:8080"
     command: airflow webserver
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:${WEB_SERVER_PORT:-8080}/health"]
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
       interval: 10s
       timeout: 10s
       retries: 5
