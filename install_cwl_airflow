@@ -14,3 +14,4 @@ conda init bash
 echo 'conda activate airflowenv' >> /home/airflow/.bashrc
 source /home/airflow/.bashrc
 conda install -y -c r r -n airflowenv
+[[ -v CONDA_ENV ]] && conda create -f ${CONDA_ENV}
