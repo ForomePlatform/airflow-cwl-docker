@@ -1,5 +1,16 @@
-#!/bin/sh
+#!/bin/bash
 
 cd /cwl-airflow
 sed -ie 's#apache-airflow==2.0.1#apache-airflow==2.0.2#g' setup.py
 pip3 install .
+pip3 install --upgrade apache-airflow-providers-google
+unzip /dependencies/artifacts.zip -d /nsaphutils
+pip3 install cwlref-runner /nsaphutils/dist/nsaph_utils-0.0.4.1-py3-none-any.whl
+wget https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh -O ~/anaconda.sh
+bash ~/anaconda.sh -b -p $HOME/anaconda
+pip3 uninstall -y typing
+conda create -y --name airflowenv python=3.6
+conda init bash
+echo 'conda activate airflowenv' >> /home/airflow/.bashrc
+source /home/airflow/.bashrc
+conda install -y -c r r -n airflowenv
