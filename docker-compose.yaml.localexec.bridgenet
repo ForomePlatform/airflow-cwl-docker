@@ -29,6 +29,10 @@ services:
       - ${PROJECT_DIR:-./project}:/opt/airflow/project
       - ${DAGS_DIR:-./dags}:/opt/airflow/dags
       - ${LOGS_DIR:-./airflow-logs}:/opt/airflow/logs
+      - ${CWL_TMP_FOLDER:-./cwl_tmp_folder}:/opt/airflow/project/temp/cwl_tmp_folder
+      - ${CWL_INPUTS_FOLDER:-./cwl_inputs_folder}:/opt/airflow/project/temp/cwl_inputs_folder
+      - ${CWL_OUTPUTS_FOLDER:-./cwl_outputs_folder}:/opt/airflow/project/temp/cwl_outputs_folder
+      - ${CWL_PICKLE_FOLDER:-./cwl_pickle_folder}:/opt/airflow/project/temp/cwl_pickle_folder
       - type: bind
         source: /var/run/docker.sock
         target: /var/run/docker.sock
@@ -67,6 +71,10 @@ services:
       - ${DAGS_DIR:-./dags}:/opt/airflow/dags
       - ${SCRIPTS_DIR:-./scripts}:/opt/airflow/scripts
       - ${LOGS_DIR:-./airflow-logs}:/opt/airflow/logs
+      - ${CWL_TMP_FOLDER:-./cwl_tmp_folder}:/opt/airflow/project/temp/cwl_tmp_folder
+      - ${CWL_INPUTS_FOLDER:-./cwl_inputs_folder}:/opt/airflow/project/temp/cwl_inputs_folder
+      - ${CWL_OUTPUTS_FOLDER:-./cwl_outputs_folder}:/opt/airflow/project/temp/cwl_outputs_folder
+      - ${CWL_PICKLE_FOLDER:-./cwl_pickle_folder}:/opt/airflow/project/temp/cwl_pickle_folder
       - type: bind
         source: /var/run/docker.sock
         target: /var/run/docker.sock
