@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        CONDA_ENV: ${CONDA_ENV}
     restart: always
     user: root
     container_name: scheduler
@@ -45,6 +47,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        CONDA_ENV: ${CONDA_ENV}
     container_name: webserver
     restart: always
     user: root
