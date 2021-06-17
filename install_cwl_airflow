@@ -13,20 +13,15 @@ chmod a+x ./anaconda.sh
 pip3 uninstall -y typing
 cd /dependencies/
 export PATH=${HOME}/anaconda/condabin:$PATH
-if [ ! -z "${CONDA_ENV}" ] ;
+export CONDA_ENVFILE=$CONDA_ENV.yml
+if [ -f "${CONDA_ENVFILE}" ] ;
 then
   echo 'installing env from file'
-  conda env create -f ${CONDA_ENV}.yml --prefix=${HOME}/${CONDA_ENV}
-  #conda init bash
-  #echo "conda activate ${CONDA_ENV}" >> ${HOME}/.bashrc
-  #source ${HOME}/.bashrc
+  conda env create -f ${CONDA_ENVFILE} --prefix=${HOME}/${CONDA_ENV}
   exit
 else
   echo 'installing default env'
-  conda create -y --name NSAPHclimate python=3.6
-  #conda init bash
-  #echo 'conda activate NSAPHclimate' >> /home/airflow/.bashrc
-  #source /home/airflow/.bashrc
+  conda create -y --name NSAPHclimate python=3.8
   conda install -y -c r r -n NSAPHclimate
   exit
 fi
