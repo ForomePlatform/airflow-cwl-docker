@@ -1,0 +1,28 @@
+#!/bin/bash
+
+cd /dependencies
+for dir in */
+do
+  echo "Installing " $dir
+  pip3 install .
+done
+cd ~
+wget https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh -O anaconda.sh
+chmod a+x ./anaconda.sh
+./anaconda.sh -b -p ${HOME}/anaconda
+pip3 uninstall -y typing
+cd /dependencies/
+export PATH=${HOME}/anaconda/condabin:$PATH
+export CONDA_ENVFILE=$CONDA_ENV.yml
+if [ -f "${CONDA_ENVFILE}" ] ;
+then
+  echo 'installing env from file'
+  conda env create -f ${CONDA_ENVFILE} --prefix=${HOME}/${CONDA_ENV}
+  exit
+else
+  echo 'installing default env'
+  conda create -y --name NSAPHclimate python=3.8
+  conda install -y -c r r -n NSAPHclimate
+  exit
+fi
+echo 'build ended'
