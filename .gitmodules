@@ -1,14 +1,17 @@
 [submodule "cwl-airflow"]
 	path = cwl-airflow
 	url = https://github.com/Barski-lab/cwl-airflow.git
+
 [submodule "nsaph-utils"]
     path = project/nsaph-utils
     url = https://gitlab-int.rc.fas.harvard.edu/rse/francesca_dominici/tools/nsaph_utils.git
     branch = dev
+
 [submodule "data-platform"]
     path = project/data-platform
     url = https://gitlab-int.rc.fas.harvard.edu/rse/francesca_dominici/nsaph.git
     branch = develop
+    
 [submodule "census"]
     path = project/census
     url = https://gitlab-int.rc.fas.harvard.edu/rse/francesca_dominici/tools/getcensus.git
