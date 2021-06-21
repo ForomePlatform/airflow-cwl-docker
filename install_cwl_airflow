@@ -4,6 +4,6 @@ cd /cwl-airflow
 sed -ie 's#apache-airflow==2.0.1#apache-airflow==2.0.2#g' setup.py
 pip3 install .
 pip3 install --upgrade apache-airflow-providers-google
-pip3 install cwlref-runner /nsaphutils/dist/nsaph_utils-0.0.4.1-py3-none-any.whl
+pip3 install cwlref-runner 
 cd ~
 echo 'build ended'
