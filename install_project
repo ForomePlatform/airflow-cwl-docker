@@ -24,8 +24,11 @@ then
   exit
 else
   echo 'installing default env'
-  conda create -y --name NSAPHclimate python=3.8
-  conda install -y -c r r -n NSAPHclimate
+  for cenv in NSAPHclimate census
+  do
+    conda create -y --name $cenv python=3.8
+    conda install -y -c r r -n $cenv
+  done
   exit
 fi
 echo 'build ended'
