@@ -1,7 +1,7 @@
 version: '3'
 services:
   scheduler:
-    image: ${AIRFLOW_IMAGE_NAME:-myairflow}
+    image: ${AIRFLOW_IMAGE_NAME:-myairflow222}
     build:
       context: .
       dockerfile: Dockerfile
@@ -32,10 +32,10 @@ services:
       - ${PROJECT_DIR:-./project}:/opt/airflow/project
       - ${DAGS_DIR:-./dags}:/opt/airflow/dags
       - ${LOGS_DIR:-./airflow-logs}:/opt/airflow/logs
-      - ${CWL_TMP_FOLDER:-./cwl_tmp_folder}:/opt/airflow/project/temp/cwl_tmp_folder
-      - ${CWL_INPUTS_FOLDER:-./cwl_inputs_folder}:/opt/airflow/project/temp/cwl_inputs_folder
-      - ${CWL_OUTPUTS_FOLDER:-./cwl_outputs_folder}:/opt/airflow/project/temp/cwl_outputs_folder
-      - ${CWL_PICKLE_FOLDER:-./cwl_pickle_folder}:/opt/airflow/project/temp/cwl_pickle_folder
+      - ${CWL_TMP_FOLDER:-./cwl_tmp_folder}:/opt/airflow/cwl_tmp_folder
+      - ${CWL_INPUTS_FOLDER:-./cwl_inputs_folder}:/opt/airflow/cwl_inputs_folder
+      - ${CWL_OUTPUTS_FOLDER:-./cwl_outputs_folder}:/opt/airflow/cwl_outputs_folder
+      - ${CWL_PICKLE_FOLDER:-./cwl_pickle_folder}:/opt/airflow/cwl_pickle_folder
       - type: bind
         source: /var/run/docker.sock
         target: /var/run/docker.sock
@@ -43,7 +43,7 @@ services:
     network_mode: bridge
   
   webserver:
-    image: ${AIRFLOW_IMAGE_NAME:-myairflow}
+    image: ${AIRFLOW_IMAGE_NAME:-myairflow222}
     build:
       context: .
       dockerfile: Dockerfile

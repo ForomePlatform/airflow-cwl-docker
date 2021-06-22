@@ -1,0 +1,6 @@
+/airflow-logs
+/cwl_inputs_folder
+/cwl_outputs_folder
+/cwl_pickle_folder
+/cwl_tmp_folder
+/dags
