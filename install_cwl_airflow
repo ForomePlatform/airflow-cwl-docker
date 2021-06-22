@@ -11,18 +11,33 @@ wget https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh -O anac
 chmod a+x ./anaconda.sh
 ./anaconda.sh -b -p ${HOME}/anaconda
 pip3 uninstall -y typing
+pip3 uninstall -y numpy scipy
 cd /dependencies/
-export PATH=${HOME}/anaconda/condabin:$PATH
+export PATH=${HOME}/anaconda/condabin:$PATH:${HOME}/NSAPHclimate/bin
 export CONDA_ENVFILE=$CONDA_ENV.yml
 if [ -f "${CONDA_ENVFILE}" ] ;
 then
   echo 'installing env from file'
   conda env create -f ${CONDA_ENVFILE} --prefix=${HOME}/${CONDA_ENV}
+  conda install -y -c conda-forge numpy scipy dataclasses rpy2 --prefix=${HOME}/${CONDA_ENV}
+  pip3 install numpy scipy
+  conda init bash
+  source ${HOME}/.bashrc
+  conda activate ${HOME}/${CONDA_ENV}
+  R -e "install.packages('remotes')"
+  R -e "remotes::install_github('czigler/arepa')"
   exit
 else
   echo 'installing default env'
+  
   conda create -y --name NSAPHclimate python=3.8
   conda install -y -c r r -n NSAPHclimate
+  conda install -y numpy scipy dataclasses -n NSAPHclimate
+  conda install -y -c conda-forge rpy2 -n NSAPHclimate
+  pip3 install numpy scipy
+  conda init
+  conda activate NSAPHclimate
+  R -e "install.packages('remotes') remotes::install_github('czigler/arepa') q()"
   exit
 fi
 echo 'build ended'
