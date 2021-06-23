@@ -1,31 +1,23 @@
 #!/bin/bash
-
-cd /cwl-airflow
-sed -ie 's#apache-airflow==2.0.1#apache-airflow==2.0.2#g' setup.py
-pip3 install .
-pip3 install --upgrade apache-airflow-providers-google
-unzip /dependencies/artifacts.zip -d /nsaphutils
-pip3 install cwlref-runner /nsaphutils/dist/nsaph_utils-0.0.4.1-py3-none-any.whl
-cd ~
-wget https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh -O anaconda.sh
-chmod a+x ./anaconda.sh
-./anaconda.sh -b -p ${HOME}/anaconda
-pip3 uninstall -y typing
-pip3 uninstall -y numpy scipy
-cd /dependencies/
 export PATH=${HOME}/anaconda/condabin:$PATH:${HOME}/NSAPHclimate/bin
 export CONDA_ENVFILE=$CONDA_ENV.yml
+cd /dependencies
 if [ -f "${CONDA_ENVFILE}" ] ;
 then
   echo 'installing env from file'
-  conda env create -f ${CONDA_ENVFILE} --prefix=${HOME}/${CONDA_ENV}
-  conda install -y -c conda-forge numpy scipy dataclasses rpy2 --prefix=${HOME}/${CONDA_ENV}
-  pip3 install numpy scipy
-  conda init bash
-  source ${HOME}/.bashrc
-  conda activate ${HOME}/${CONDA_ENV}
-  R -e "install.packages('remotes')"
-  R -e "remotes::install_github('czigler/arepa')"
+  conda env create -f ${CONDA_ENVFILE} --prefix=${HOME}/anaconda/envs/${CONDA_ENV}
+  source /root/anaconda/etc/profile.d/conda.sh
+  echo 'from /root/anaconda/etc/profile.d/conda.sh'
+  conda activate ${HOME}/anaconda/envs/${CONDA_ENV}
+  conda install -y -c conda-forge psycopg2 apache-airflow-providers-postgres apache-airflow-providers-mysql numpy scipy apache-airflow=2.0.1 dataclasses rpy2
+  cd /cwl-airflow
+  pip3 install .
+  pip3 install --upgrade apache-airflow-providers-google
+  unzip /dependencies/artifacts.zip -d /nsaphutils
+  pip3 install cwltool cwlref-runner wheel /nsaphutils/dist/nsaph_utils-0.0.4.1-py3-none-any.whl
+  pip3 install SQLAlchemy==1.3.23 --force-reinstall
+  R -e "install.packages('remotes', repos='https://cran.cmm.msu.ru')"
+  R -e "remotes::install_github('czigler/arepa', repos='https://cran.cmm.msu.ru')"
   exit
 else
   echo 'installing default env'
@@ -35,7 +27,7 @@ else
   conda install -y numpy scipy dataclasses -n NSAPHclimate
   conda install -y -c conda-forge rpy2 -n NSAPHclimate
   pip3 install numpy scipy
-  conda init
+  conda init bash
   conda activate NSAPHclimate
   R -e "install.packages('remotes') remotes::install_github('czigler/arepa') q()"
   exit
