@@ -16,3 +16,8 @@
     path = project/census
     url = git@gitlab-int.rc.fas.harvard.edu:rse/francesca_dominici/tools/getcensus.git
     branch = dev
+
+[submodule "workflows"]
+	path = cwl_workflows
+	url = git@gitlab-int.rc.fas.harvard.edu:rse/francesca_dominici/cwl_workflows.git
+
