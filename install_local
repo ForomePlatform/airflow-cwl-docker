@@ -1,0 +1,14 @@
+#!/bin/bash
+
+cd /dependencies || exit
+# for dir in */
+# Install projects with setup.py
+for dir in  nsaph-utils data-platform census
+do
+  echo "Installing " $dir
+  pushd $dir || exit
+  pip3 install .
+  popd || exit
+done
+cd ~ || exit
+echo 'Installed: local projects'
