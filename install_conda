@@ -16,12 +16,16 @@ else
   for cenv in NSAPHclimate census
   do
     echo $cenv
+    prefix=${HOME}/anaconda/envs/${cenv}
     #conda create -y --name $cenv  python=3.8
-    conda env create -f ${cenv}.yaml   --prefix=${HOME}/${cenv}
+    conda env create -f ${cenv}.yaml --prefix=$prefix
     source /root/anaconda/etc/profile.d/conda.sh
     echo 'from /root/anaconda/etc/profile.d/conda.sh'
-    conda activate ${HOME}/anaconda/envs/${cenv}
+    conda activate ${prefix}
+    echo "Installing conda packages"
+    echo https_proxy=${https_proxy}   HTTPS_PROXY="${HTTPS_PROXY}"
     conda install -y -c conda-forge psycopg2 apache-airflow-providers-postgres apache-airflow-providers-mysql numpy scipy apache-airflow=2.0.1 dataclasses rpy2
+    echo "Installing R packages"
     R -e "install.packages('remotes')"
     R -e "remotes::install_github('czigler/arepa')"
     #exit
