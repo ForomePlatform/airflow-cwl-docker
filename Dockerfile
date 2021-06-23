@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y curl unzip zip wget ca-certificates \
  && wget https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh -O anaconda.sh \
  && chmod a+x ./anaconda.sh \
  && ./anaconda.sh -b -p ${HOME}/anaconda \
- && chmod a+rx /usr/bin/entrypoint.sh
+ && chmod a+rx /usr/bin/entrypoint.sh  \
  && chmod a+rx /usr/bin/install_cwl_airflow  /usr/bin/install_conda  /usr/bin/install_local
 
 ARG CONDA_ENV
