@@ -25,9 +25,12 @@ else
     conda activate ${cenv}
     echo "Installing conda packages"
     conda install -y -c conda-forge psycopg2 apache-airflow-providers-postgres apache-airflow-providers-mysql numpy scipy apache-airflow=2.0.1 dataclasses rpy2
-    echo "Installing R packages"
-    R -e "install.packages('remotes')"
-    R -e "remotes::install_github('czigler/arepa')"
+    if command -v R &> /dev/null
+    then
+      echo "Installing R packages"
+      R -e "install.packages('remotes')"
+      R -e "remotes::install_github('czigler/arepa')"
+    fi
     #exit
   done
 fi
