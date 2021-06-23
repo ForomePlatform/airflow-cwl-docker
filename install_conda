@@ -16,14 +16,19 @@ else
   echo 'installing default env'
   for cenv in NSAPHclimate census
   do
-    conda create -y --name $cenv python=3.8
-    conda install -y -c r r -n $cenv
-    conda install -y numpy scipy dataclasses -n $cenv
-    conda install -y -c conda-forge rpy2 -n $cenv
-    pip3 install numpy scipy
-    conda init
-    conda activate $cenv
+    #conda create -y --name $cenv  python=3.8
+    conda env create -f ${cenv.yaml}
+    source /root/anaconda/etc/profile.d/conda.sh
+    echo 'from /root/anaconda/etc/profile.d/conda.sh'
+    conda activate ${HOME}/anaconda/envs/${CONDA_ENV}
+    conda install -y -c conda-forge psycopg2 apache-airflow-providers-postgres apache-airflow-providers-mysql numpy scipy apache-airflow=2.0.1 dataclasses rpy2
+    cd /cwl-airflow || exit
+    pip3 install .
+    pip3 install --upgrade apache-airflow-providers-google
+    pip3 install cwltool cwlref-runner wheel 
+    pip3 install SQLAlchemy==1.3.23 --force-reinstall
     R -e "install.packages('remotes')"
-    exit
+    R -e "remotes::install_github('czigler/arepa')"
+    #exit
   done
 fi
