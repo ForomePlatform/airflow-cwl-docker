@@ -1,34 +1,29 @@
 #!/bin/bash
 
+echo "Installing Anaconda"
 wget https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh -O anaconda.sh
 chmod a+x ./anaconda.sh
 ./anaconda.sh -b -p ${HOME}/anaconda
+export PATH=${HOME}/anaconda/condabin:$PATH
 pip3 uninstall -y typing
 cd /dependencies/ || exit
-export PATH=${HOME}/anaconda/condabin:$PATH
-export CONDA_ENVFILE=$CONDA_ENV.yml
 if [ -f "${CONDA_ENVFILE}" ] ;
 then
-  echo 'installing env from file'
-  conda env create -f ${CONDA_ENVFILE} --prefix=${HOME}/${CONDA_ENV}
-  exit
+  echo "Not yet implemented"
+  exit 1
 else
-  echo 'installing default env'
+  echo 'installing default conda environments'
   for cenv in NSAPHclimate census
   do
+    echo $cenv
     #conda create -y --name $cenv  python=3.8
-    conda env create -f ${cenv.yaml}
+    conda env create -f ${cenv}.yaml   --prefix=${HOME}/${cenv}
     source /root/anaconda/etc/profile.d/conda.sh
     echo 'from /root/anaconda/etc/profile.d/conda.sh'
-    conda activate ${HOME}/anaconda/envs/${CONDA_ENV}
+    conda activate ${HOME}/anaconda/envs/${cenv}
     conda install -y -c conda-forge psycopg2 apache-airflow-providers-postgres apache-airflow-providers-mysql numpy scipy apache-airflow=2.0.1 dataclasses rpy2
-    cd /cwl-airflow || exit
-    pip3 install .
-    pip3 install --upgrade apache-airflow-providers-google
-    pip3 install cwltool cwlref-runner wheel 
-    pip3 install SQLAlchemy==1.3.23 --force-reinstall
     R -e "install.packages('remotes')"
     R -e "remotes::install_github('czigler/arepa')"
-    exit
+    #exit
   done
 fi
