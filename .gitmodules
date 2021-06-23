@@ -18,6 +18,6 @@
     branch = dev
 
 [submodule "workflows"]
-	path = cwl_workflows
+	path = project/workflows
 	url = git@gitlab-int.rc.fas.harvard.edu:rse/francesca_dominici/cwl_workflows.git
 

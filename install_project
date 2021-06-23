@@ -2,6 +2,7 @@
 
 cd /dependencies || exit
 # for dir in */
+# Install projects with setup.py
 for dir in  nsaph-utils data-platform census
 do
   echo "Installing " $dir
