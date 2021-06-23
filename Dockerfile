@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y curl unzip zip wget ca-certificates \
  && chmod a+x ./anaconda.sh \
  && ./anaconda.sh -b -p ${HOME}/anaconda \
  && chmod a+rx /usr/bin/entrypoint.sh
+ && chmod a+rx /usr/bin/install_cwl_airflow  /usr/bin/install_conda  /usr/bin/install_local
 
 ARG CONDA_ENV
 ENV CONDA_ENV=${CONDA_ENV}
