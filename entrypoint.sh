@@ -5,4 +5,5 @@ export PATH=${HOME}/anaconda/condabin/:$PATH:${HOME}/anaconda/envs/${CONDA_ENV}/
 # activate conda environment and let the following process take over
 source /root/anaconda/etc/profile.d/conda.sh
 conda activate ${HOME}/anaconda/envs/${CONDA_ENV}
+export PYTHONPATH=$PYTHONPATH:/opt/airflow/project/src/python
 exec "$@"
