@@ -18,19 +18,20 @@ else
   do
     echo $cenv
     #export prefix=${HOME}/anaconda/envs/${cenv}
-    #conda create -y --name $cenv  python=3.8
-    conda env create -f ${cenv}.yaml 
+    conda create -y --name $cenv  python=3.8
+    #conda env create -f ${cenv}.yaml 
     source /root/anaconda/etc/profile.d/conda.sh
     echo 'from /root/anaconda/etc/profile.d/conda.sh'
     conda activate ${cenv}
     echo "Installing conda packages"
-    conda install -y --name ${cenv} -c conda-forge psycopg2 apache-airflow-providers-postgres apache-airflow-providers-mysql numpy scipy apache-airflow=2.0.1 dataclasses rpy2
+    conda install -y --name ${cenv} -c conda-forge psycopg2 numpy scipy dataclasses r rpy2
     if command -v R &> /dev/null
     then
       echo "Installing R packages"
-      R -e "install.packages('remotes')"
-      R -e "remotes::install_github('czigler/arepa')"
+      R -e "install.packages('remotes', repos='https://cran.cmm.msu.ru')"
+      R -e "remotes::install_github('czigler/arepa', repos='https://cran.cmm.msu.ru')"
     fi
+    bash install_cwl_airflow
     #exit
   done
 fi
