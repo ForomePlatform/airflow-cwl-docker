@@ -10,7 +10,7 @@ COPY project /dependencies
 COPY entrypoint.sh /usr/bin/entrypoint.sh
 
 SHELL [ "/bin/bash", "--login" ,"-c" ]
-RUN apt-get update && apt-get install -y curl python3-dev python3-pip unzip zip wget ca-certificates \
+RUN apt-get update && apt-get install -y curl unzip zip wget ca-certificates \
  && update-ca-certificates --fresh && chmod a+rx /usr/bin/install_cwl_airflow \
  && chmod -R a+rx /cwl-airflow && \
  curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-20.10.7.tgz \
@@ -21,9 +21,9 @@ RUN apt-get update && apt-get install -y curl python3-dev python3-pip unzip zip 
 
 ARG CONDA_ENV
 ENV CONDA_ENV=${CONDA_ENV}
-ENV PATH=${HOME}/anaconda/condabin/:$PATH:${HOME}/anaconda/envs/${CONDA_ENV}/bin:${HOME}/anaconda/bin
 ENTRYPOINT [ "entrypoint.sh" ]
 
 RUN install_conda
-#RUN install_cwl_airflow
+ENV PATH=/root/anaconda/condabin/:$PATH:/root/anaconda/envs/${CONDA_ENV}/bin:/root/anaconda/bin
+RUN install_cwl_airflow
 #RUN install_local

@@ -29,9 +29,15 @@ else
     then
       echo "Installing R packages"
       R -e "install.packages('remotes', repos='https://cran.cmm.msu.ru')"
+      R -e "remotes::install_github('cran/zipcode', repos='https://cran.cmm.msu.ru')"
       R -e "remotes::install_github('czigler/arepa', repos='https://cran.cmm.msu.ru')"
+      R -e "install.packages('optparse', repos='https://cran.cmm.msu.ru')"
     fi
     bash install_cwl_airflow
+    bash install_local
+    echo '#!/bin/bash' > /usr/bin/RScript
+    echo 'exec conda run --no-capture-output -n $CONDA_ENV Rscript "$@"' >> /usr/bin/Rscript
+    chmod a+x /usr/bin/Rscript
     #exit
   done
 fi
