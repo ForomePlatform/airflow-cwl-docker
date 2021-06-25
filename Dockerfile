@@ -25,5 +25,3 @@ ENTRYPOINT [ "entrypoint.sh" ]
 
 RUN install_conda
 ENV PATH=/root/anaconda/condabin/:$PATH:/root/anaconda/envs/${CONDA_ENV}/bin:/root/anaconda/bin
-RUN install_cwl_airflow
-#RUN install_local
