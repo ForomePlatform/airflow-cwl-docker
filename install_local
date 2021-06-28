@@ -8,7 +8,7 @@ for dir in  nsaph-utils data-platform census
 do
   echo "Installing " $dir
   pushd $dir || exit
-  pip3 install .
+  pip3 install . || cd dist && pip3 install *.whl
   popd || exit
 done
 cd ~ || exit
