@@ -18,11 +18,18 @@
 # under the License.
 #
 
-echo "Installing cwl-airflow"
-cd /cwl-airflow || exit
-pip3 install .
-pip3 install --upgrade apache-airflow-providers-google
-pip3 install --upgrade cwltool cwlref-runner marko wheel paramiko sshtunnel
-pip3 install SQLAlchemy==1.3.23 --force-reinstall
+echo "Installing local projects"
+cd /dependencies || exit
+# Install projects with setup.py
+for dir in */
+do
+  echo "Installing " "$dir"
+  pushd "$dir" || exit
+  if [ -f setup.py ] ; then
+    echo "Building wheel"
+    pip3 install . || cd dist && pip3 install *.whl
+  fi
+  popd || exit
+done
 cd ~ || exit
-echo 'build ended'
+echo 'Installed: local projects'

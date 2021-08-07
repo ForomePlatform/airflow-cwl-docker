@@ -18,16 +18,12 @@
 # under the License.
 #
 
-echo "Installing local projects"
-cd /dependencies || exit
-# for dir in */
-# Install projects with setup.py
-for dir in  nsaph-utils data-platform census
-do
-  echo "Installing " $dir
-  pushd $dir || exit
-  pip3 install . || cd dist && pip3 install *.whl
-  popd || exit
-done
+echo "Installing cwl-airflow"
+cd /cwl-airflow || exit
+pip3 install .
+pip3 install --upgrade apache-airflow-providers-google
+pip3 install --upgrade cwltool cwlref-runner wheel
+pip3 install -r requirements.txt
+pip3 install SQLAlchemy==1.3.23 --force-reinstall
 cd ~ || exit
-echo 'Installed: local projects'
+echo 'build ended'

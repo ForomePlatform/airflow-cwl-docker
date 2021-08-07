@@ -1,34 +1,38 @@
-# Apache Airflow + CWL-Airflow in Docker
+# Apache Airflow + CWL-Airflow in Docker with Optional Conda and R
 
-## Instruction:
+## Before building the containers
 
-### Attention #0!
+### Configure Git submodules
 
-If you have some limits of internet in containers:
+This step is especially important if you are working inside environment 
+with limited Internet capabilities. It works around the problem that docker
+containers running CWL and Airflow might have no access to the Internet.
 
-1. Clone this repo. Go to repo directory
+Most probably, you need to install your projects inside the CWL-Airflow 
+environment. These projects can be installed using Git submodules functionality.
+
+1. Clone this repo and go to repo directory
+                     
+2. If you need to install additional projects with custom code 
+   [add them as submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) 
+   to the project as subprojects inside `project` subdirectory. You can also
+   just copy the content into a subdirectory of `project`.
+   Please note, that one submodule (CWL-Airflow) is already included. 
 
 2. Execute command:
 
 `git submodule update --init --recursive`
+                 
+### Configuring PostgreSQL
 
-### If PosgtreSQL installed on host!!! (Hard way. Example. Gateway, subnet, network name and IPs may be different) 
-
-1. Create docker network
-
-`docker network create --gateway 172.18.0.1 --subnet 172.18.0.0/24 airflownetwork`
-
-2. Configure authentification in pg_hba.conf
-
-`host    all             all             172.18.0.77/32          password`
-
-`host    all             all             172.18.0.99/32          password`
-
-3. Configure listening address in postgresql.conf and restart PostgreSQL
-
-`listen_address = '*'`
-
-4. Create role, DB and change password in PostgreSQL
+The next steps depend on whether you would like to reuse a DBMS already 
+installed on your system for Airflow or would like to install an additional 
+container with PostgreSQL (default option). The following sections explain how 
+to configure existing PostgreSQL service to be used by Airflow.
+                                                                   
+#### Create database and user for Airflow
+Execute the following commands, replacing appropriate values, or execute 
+corresponding commands within PostgreSQL console, or SQL console.
 
 `sudo -u postgres createuser --superuser --createrole --createdb --login --inherit airflow`
 
@@ -36,88 +40,93 @@ If you have some limits of internet in containers:
 
 `sudo -u postgres psql -c "alter user airflow with password 'airflow';"`
 
-5. Execute commands to start:
 
-`export POSTGRE_SERVER=172.18.0.1`  (PosqtgreSQL server IP is gateway address)
 
-`export POSTGRE_DB=airflow`
+####  Configure PostgreSQL to authenticate Airflow user
 
-`export POSTGRE_USER=airflow`
+If your PostgreSQL configured to authenticate user(s) 
+from built-in bridge Docker network, you are all set, nothing needs
+to be done.
 
-`export POSTGRE_PASS=airflow`
+Only if you need to adjust authentication settings, follow these steps
+or execute a similar procedure:
 
-`docker-compose -f docker-compose.yaml.localexec.definenet build`
+1. Create docker network
 
-`docker-compose -f docker-compose.yaml.localexec.definenet up -d`
+`docker network create --gateway 172.18.0.1 --subnet 172.18.0.0/24 airflownetwork`
 
-ATTENTION!
+2. Configure authentication in `pg_hba.conf`
 
-If you have other params of existing network (NOT built-in network! Only user-defined networks with user-defined subnets!), override this variables via export and change pg_hba.conf and postgresql.conf how need:
+        host    all             all             172.18.0.77/32          password
+        host    all             all             172.18.0.99/32          password
 
-NETWORK_NAME
+3. Configure listening address in `postgresql.conf` and restart PostgreSQL
 
-WEB_SERVER_CONTAINER_IP
+        listen_address = '*'
 
-SCHEDULER_CONTAINER_IP
+If you have an existing ***user-defined*** network with custom parameters 
+(***NOT a built-in network***), you will probably need to override these
+additional parameters by exporting them as environment variables 
+and adjusting pg_hba.conf and postgresql.conf as needed.
+ 
+    NETWORK_NAME
+    WEB_SERVER_CONTAINER_IP
+    SCHEDULER_CONTAINER_IP
 
-### If PosgtreSQL installed on host!!! (Easy way: if your PostgreSQL configured to authentificate user(s) from built-in brodge Docker network)
+#### Setup Environment Variables
 
-1. Only if user and DB for Airflow do not exist
+If you created custom docker network, your PostgreSQL server address 
+is defined by `gateway` option in `docker network create` command (see above,
+where it is set to `172.18.0.1`). Alternatively, it is normally, `172.17.0.1`
 
-See step #4 in Hard way and execute commands.
+    export POSTGRE_SERVER=172.17.0.1  
+    ## or export POSTGRE_SERVER=172.18.0.1 
+    export POSTGRE_DB=airflow
+    export POSTGRE_USER=airflow
+    export POSTGRE_PASS=airflow
 
-2. Execute commands to start:
+## Build Containers           
+                 
+By default, we will build an environment for Conda by installing 
+Anaconda. If you do not need conda, you can disable it providing
+the following argument: `--build-arg conda=false`
 
-`export POSTGRE_SERVER=172.17.0.1`
+    docker-compose  build
+    ## or docker-compose  build --build-arg conda=false
+    docker-compose  up -d
 
-`export POSTGRE_DB=airflow`
+## Overriding default parameters
 
-`export POSTGRE_USER=airflow`
+If you want to override some params, see the section environment 
+in docker-compose.yaml.
 
-`export POSTGRE_PASS=airflow`
+###Full list of variables avalable for overriding via export:
 
-`docker-compose -f docker-compose.yaml.localexec.bridgenet build`
+    POSTGRE_USER
+    POSTGRE_PASS
+    POSTGRE_DB
+    POSTGRE_SERVER (use only not bundle)
+    _AIRFLOW_WWW_USER_USERNAME
+    _AIRFLOW_WWW_USER_PASSWORD
+    WEB_SERVER_PORT
+    ENDPOINT_URL
+    BASE_URL
+    DAGS_DIR
+    SCRIPTS_DIR
+    LOGS_DIR
+    HTTP_PROXY
+    HTTPS_PROXY
 
-`docker-compose -f docker-compose.yaml.localexec.bridgenet up -d`
-
-### Local Executor. Bundle (with PostgreSQL only)
-
-`docker-compose -f docker-compose.yaml.localexec.bundle up -d --build`
-
-If you want to override some params, see too the section environment in docker-compose.yaml.localexec.bundle and run:
+###Example overriding BASE_URL                       
 
 `export BASE_URL=http://your_domain:8080`
 
-`docker-compose -f docker-compose.yaml.localexec.bundle up -d --build`
+
+### If PosgtreSQL installed on host!!! (Hard way. Example. Gateway, subnet, network name and IPs may be different) 
+
+
+
+
 
 ### Attention!
 
-Full list of variables avalable for overriding via export:
-
-POSTGRE_USER
-
-POSTGRE_PASS
-
-POSTGRE_DB
-
-POSTGRE_SERVER (use only not bundle)
-
-_AIRFLOW_WWW_USER_USERNAME
-
-_AIRFLOW_WWW_USER_PASSWORD
-
-WEB_SERVER_PORT
-
-ENDPOINT_URL
-
-BASE_URL
-
-DAGS_DIR
-
-SCRIPTS_DIR
-
-LOGS_DIR
-
-HTTP_PROXY
-
-HTTPS_PROXY

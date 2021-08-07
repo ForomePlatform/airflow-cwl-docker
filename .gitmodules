@@ -2,22 +2,3 @@
     path = cwl-airflow
 	url = https://github.com/Barski-lab/cwl-airflow.git
 
-[submodule "nsaph-utils"]
-	path = project/nsaph-utils
-	url = git@gitlab-int.rc.fas.harvard.edu:rse/francesca_dominici/tools/nsaph_utils.git
-	branch = dev
-
-[submodule "data-platform"]
-	path = project/data-platform
-	url = git@gitlab-int.rc.fas.harvard.edu:rse/francesca_dominici/nsaph.git
-	branch = develop
-    
-[submodule "census"]
-    path = project/census
-    url = git@gitlab-int.rc.fas.harvard.edu:rse/francesca_dominici/tools/getcensus.git
-    branch = dev
-
-[submodule "workflows"]
-	path = project/workflows
-	url = git@gitlab-int.rc.fas.harvard.edu:rse/francesca_dominici/cwl_workflows.git
-
