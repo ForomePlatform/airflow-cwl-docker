@@ -88,12 +88,19 @@ where it is set to `172.18.0.1`). Alternatively, it is normally, `172.17.0.1`
 ## Build Containers           
                  
 By default, we will build an environment for Conda by installing 
-Anaconda. If you do not need conda, you can disable it providing
-the following argument: `--build-arg conda=false`
+Anaconda. 
 
-    docker-compose  build
-    ## or docker-compose  build --build-arg conda=false
-    docker-compose  up -d
+If you do not need conda, you can disable it by follwing two steps:
+
+1. In `Dockerfile`Comment out the line
+
+       ENTRYPOINT [ "entrypoint.sh" ]
+
+2. Provide the following build argument: `--build-arg conda=false`
+
+       docker-compose  build
+       ## or docker-compose  build --build-arg conda=false
+       docker-compose  up -d
 
 ## Overriding default parameters
 
