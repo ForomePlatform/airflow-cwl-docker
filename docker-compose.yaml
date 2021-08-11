@@ -24,7 +24,7 @@ x-aliases:
         context: .
         dockerfile: Dockerfile
         args:
-          conda: ${conda:-true}
+          conda: "${conda:-true}"
 
   - &airflow_env
       environment:
@@ -44,6 +44,7 @@ x-aliases:
         AIRFLOW__WEBSERVER__BASE_URL: ${BASE_URL:-http://localhost:8080}
         AIRFLOW__LOGGING__BASE_LOG_FOLDER: "/opt/airflow/logs"
         PROJECT_DIR: "/opt/airflow/project"
+        conda: "${conda:-true}"
         NO_PROXY: localhost,127.0.0.1,8.8.8.8,google.com,security.debian.org,repo.mysql.com,deb.debian.org,172.17.0.1,webserver,scheduler
         no_proxy: localhost,127.0.0.1,8.8.8.8,google.com,security.debian.org,repo.mysql.com,deb.debian.org,172.17.0.1,webserver,scheduler
 

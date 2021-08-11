@@ -38,10 +38,9 @@ RUN apt-get update && apt-get install -y curl unzip zip wget ca-certificates \
  && chmod a+rx /usr/bin/entrypoint.sh  \
  && chmod a+rx /usr/bin/install_cwl_airflow.sh  /usr/bin/install_conda.sh  /usr/bin/install_projects.sh
 
-# Comment out the line below if not using conda. Leave it uncommented for conda
-# ENTRYPOINT [ "entrypoint.sh" ]
+ENTRYPOINT [ "entrypoint.sh" ]
 
 RUN if ["$conda" == "true"]; then install_conda.sh ; \
-        else install_cwl_airflow.sh && install_projects.sh ; \
+        else apt update && apt install -y python3-dev python3-pip && install_cwl_airflow.sh && install_projects.sh ; \
     fi
-ENV PATH=/root/anaconda/condabin/:$PATH:/root/anaconda/envs/${CONDA_ENV}/bin:/root/anaconda/bin
+ENV PATH=$PATH:/root/anaconda/condabin/:$PATH:/root/anaconda/envs/${CONDA_ENV}/bin:/root/anaconda/bin
