@@ -24,6 +24,6 @@ pip3 install .
 pip3 install --upgrade apache-airflow-providers-google
 pip3 install --upgrade cwltool cwlref-runner wheel
 pip3 install -r requirements.txt
-pip3 install psycopg
+pip3 install psycopg2
 pip3 install SQLAlchemy==1.3.23 --force-reinstall
 cd ~ || exit
