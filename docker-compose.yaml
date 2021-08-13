@@ -16,7 +16,7 @@
 # under the License.
 #
 
-version: '3'
+version: '3.9'
 
 x-aliases:
   - &airflow_build_params
@@ -60,9 +60,6 @@ x-aliases:
         - type: bind
           source: /var/run/docker.sock
           target: /var/run/docker.sock
-      
-
-
 
 services:
   scheduler:
@@ -95,3 +92,17 @@ services:
       timeout: 10s
       retries: 5
     network_mode: bridge
+
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRE_USER:-airflow}
+      POSTGRES_PASSWORD: ${POSTGRE_PASS:-airflow}
+      POSTGRES_DB: ${POSTGRE_DB:-airflow}
+    profiles:
+      - postgres
+volumes:
+  postgres-db-volume:

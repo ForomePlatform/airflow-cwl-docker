@@ -5,3 +5,4 @@
 /cwl_outputs_folder
 /cwl_pickle_folder
 /cwl_tmp_folder
+.env
