@@ -29,18 +29,20 @@ COPY requirements.txt /
 COPY project /dependencies
 
 SHELL [ "/bin/bash", "--login" ,"-c" ]
-RUN apt-get update && apt-get install -y curl unzip zip wget ca-certificates \
+RUN apt-get update && apt-get install -y curl unzip zip wget ca-certificates python3-pip \
  && update-ca-certificates --fresh && chmod a+rx /usr/bin/install_cwl_airflow.sh \
  && chmod -R a+rx /cwl-airflow && \
  curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-20.10.7.tgz \
  && tar xzvf docker-20.10.7.tgz --strip 1 -C /usr/bin docker/docker \
  && rm docker-20.10.7.tgz \
  && chmod a+rx /usr/bin/entrypoint.sh  \
- && chmod a+rx /usr/bin/install_cwl_airflow.sh  /usr/bin/install_conda.sh  /usr/bin/install_projects.sh
+ && chmod a+rx /usr/bin/install_cwl_airflow.sh  /usr/bin/install_conda.sh  /usr/bin/install_projects.sh \
+ && ln -s /usr/bin/python3 /usr/bin/python
+
 
 ENTRYPOINT [ "entrypoint.sh" ]
 
-RUN if ["$conda" == "true"]; then install_conda.sh ; \
-        else apt update && apt install -y python3-dev python3-pip && install_cwl_airflow.sh && install_projects.sh ; \
+RUN if [ "$conda" == "true" ] ; then install_conda.sh ; \
+        else python3 -m pip install --upgrade pip && install_cwl_airflow.sh && install_projects.sh ; \
     fi
 ENV PATH=$PATH:/root/anaconda/condabin/:$PATH:/root/anaconda/envs/${CONDA_ENV}/bin:/root/anaconda/bin
