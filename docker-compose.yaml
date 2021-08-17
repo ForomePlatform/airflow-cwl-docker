@@ -20,8 +20,8 @@ version: '3.9'
 
 x-aliases:
   - &common_parameters
-      network_mode: "${NETWORK_MODE:-host}"
-      # https://docs.docker.com/compose/compose-file/compose-file-v3/#network-configuration-reference
+      networks:
+      - airflow-cwl-docker
   - &airflow_build_params
       build:
         context: .
@@ -75,7 +75,7 @@ services:
       - webserver
     <<: *airflow_env
     <<: *airflow_volumes
-    #<<: *common_parameters
+    <<: *common_parameters
     command: [ "airflow", "scheduler" ]
   
   webserver:
@@ -86,7 +86,7 @@ services:
     user: root
     <<: *airflow_env
     <<: *airflow_volumes
-    #<<: *common_parameters
+    <<: *common_parameters
     ports:
       - "${WEB_SERVER_PORT:-8080}:8080"
     command: [ "airflow", "webserver" ]
@@ -105,10 +105,17 @@ services:
       POSTGRES_USER: ${POSTGRE_USER:-airflow}
       POSTGRES_PASSWORD: ${POSTGRE_PASS:-airflow}
       POSTGRES_DB: ${POSTGRE_DB:-airflow}
-    #<<: *common_parameters
+    <<: *common_parameters
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     profiles:
       - postgres
 volumes:
   postgres-db-volume:
+networks:
+  airflow-cwl-docker:
+    driver: bridge
+    name: airflow
+    ipam:
+      config:
+        - subnet: 172.16.238.0/24

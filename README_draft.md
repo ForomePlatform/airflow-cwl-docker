@@ -61,3 +61,68 @@ docker-compose build
 ```
 
 ### Configuring and starting containers
+#### Configuring
+If you want to override some params, edit .env file in the root folder.
+###### Full list of variables with default values available for editing::
+```
+
+### Available options and default values
+## Postgres
+# POSTGRE_USER: airflow
+# POSTGRE_PASS: airflow
+# POSTGRE_DB: airflow
+# POSTGRES_PORT: 5432
+#
+## Airflow parameters
+# POSTGRE_SERVER: postgres
+# WEB_SERVER_PORT: 8080
+# AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRE_USER:-airflow}:${POSTGRE_PASS:-airflow}@${POSTGRE_SERVER:-postgres}/${POSTGRE_DB:-airflow}
+# AIRFLOW_CONN_METADATA_DB: postgresql+psycopg2://${POSTGRE_USER:-airflow}:${POSTGRE_PASS:-airflow}@${POSTGRE_SERVER:-postgres}/${POSTGRE_DB:-airflow}
+# AIRFLOW_VAR__METADATA_DB_SCHEMA: ${POSTGRE_DB:-airflow}
+# AIRFLOW__CORE__LOAD_EXAMPLES: False
+# DAGS_FOLDER: /opt/airflow/dags
+# _AIRFLOW_WWW_USER_USERNAME: airflow
+# _AIRFLOW_WWW_USER_PASSWORD: airflow
+# BASE_URL: http://localhost:8080 - AIRFLOW__WEBSERVER__BASE_URL
+#
+### Mapped volumes
+# PROJECT_DIR: ./project
+# DAGS_DIR: ./dags
+# LOGS_DIR: ./airflow-logs
+# CWL_TMP_FOLDER:-./cwl_tmp_folder
+# CWL_INPUTS_FOLDER:-./cwl_inputs_folder
+# CWL_OUTPUTS_FOLDER:-./cwl_outputs_folder
+# CWL_PICKLE_FOLDER:-./cwl_pickle_folder
+```
+
+> **As example**
+> _Changing base url and www username and password_
+> Add next lines to the .env file:
+>```
+>BASE_URL=http://yourdomain.com
+>POSTGRE_USER: airflow
+>POSTGRE_PASS: airflow
+>```
+>And restart conteiners
+>`docker-compose down && docker-compose up`
+
+#### Starting
+Daemon mode
+`docker-compose -d up`
+Console mode
+`docker-compose up`
+> **_Note_** Some useful commands:
+> 1. To see logs of started containers
+> usage
+> `docker-compose logs {container_name}`
+> example
+> `docker-compose logs webserver`
+> 2. To attach to the started container (bash)
+> usage
+> `docker-compose exec {container_name} bash`
+> example
+> `docker-compose exec webserver bash`
+> 3. Command to stop all your containers:
+> `docker-compose down`
+> 4. To delete all images and containers:
+> `docker system prune -a`
