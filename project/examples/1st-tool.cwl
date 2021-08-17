@@ -1,11 +1,23 @@
 #!/usr/bin/env cwl-runner
 
 cwlVersion: v1.0
-class: CommandLineTool
-baseCommand: echo
+class: Workflow
 inputs:
   message:
     type: string
-    inputBinding:
-      position: 1
 outputs: []
+
+steps:
+  echo:
+    run:
+      class: CommandLineTool
+      baseCommand: echo
+      inputs:
+        message:
+          type: string
+          inputBinding:
+            position: 1
+      outputs: []
+    in:
+      message: message
+    out: []

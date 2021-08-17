@@ -1,18 +1,34 @@
 #!/usr/bin/env cwl-runner
 
 cwlVersion: v1.0
-class: CommandLineTool
-baseCommand: Rscript
-
+class: Workflow
 inputs:
   script:
     type: File
-    inputBinding:
-      position: 1
   iterations:
     type: string
-    inputBinding:
-      position: 2
-
-
 outputs: []
+
+steps:
+  calculate:
+    run:
+      class: CommandLineTool
+      baseCommand: Rscript
+      inputs:
+        script:
+          type: File
+          inputBinding:
+            position: 1
+        iterations:
+          type: string
+          inputBinding:
+            position: 2
+
+      outputs: []
+    in:
+      iterations: iterations
+      script: script
+    out: []
+
+
+
