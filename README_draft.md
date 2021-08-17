@@ -34,31 +34,32 @@ environment. These projects can be installed using Git submodules functionality.
 
 > **_NOTE:_** For choosing start mode uses the next options:
 >```
->COMPOSE_PROFILES [postgres,null] 
+>compose_profiles [postgres,null] 
 >conda [true,false]
 >```
 
 
 In the root folder of project four files with the example .env file for the docker-compose:
 ```
-.env_exapmple_nopostgres_conda
-.env_exapmple_nopostgres_noconda
-.env_exapmple_postgres_conda
-.env_exapmple_postgres_noconda
+.env_example_nopostgres_conda
+.env_example_nopostgres_noconda
+.env_example_postgres_conda
+.env_example_postgres_noconda
 ```
 Choose the right for you and rename it to ".env".
 As example for second mode "without Conda and with Postges")
 ```
-cp -r .env_exapmple_postgres_noconda .env
+cp -r .env_example_postgres_noconda .env
 ```
 
-> **_NOTE:_ !! If you change mode you must completely rebuild containers:**
-> `docker-compose down && docker-compose build --no-cache`
+
 
 ### Build Containers
 ```
 docker-compose build
 ```
+> **_NOTE:_ !! If you change mode you must completely rebuild containers:**
+> `docker-compose down && docker-compose build --no-cache`
 
 ### Configuring and starting containers
 #### Configuring
