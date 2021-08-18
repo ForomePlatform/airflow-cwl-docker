@@ -49,6 +49,7 @@ x-aliases:
         AIRFLOW__LOGGING__BASE_LOG_FOLDER: "/opt/airflow/logs"
         PROJECT_DIR: "/opt/airflow/project"
         conda: "${conda:-true}"
+        CONDA_ENV: "${CONDA_ENV}"
         
 
   - &airflow_volumes
@@ -66,7 +67,7 @@ x-aliases:
 
 services:
   scheduler:
-    image: ${AIRFLOW_IMAGE_NAME:-myairflow-conda}
+    image: "${AIRFLOW_IMAGE_NAME:-myairflow-conda}"
     <<: *airflow_build_params
     restart: always
     user: root
@@ -79,7 +80,7 @@ services:
     command: [ "airflow", "scheduler" ]
   
   webserver:
-    image: ${AIRFLOW_IMAGE_NAME:-myairflow-conda}
+    image: "${AIRFLOW_IMAGE_NAME:-myairflow-conda}"
     <<: *airflow_build_params
     container_name: webserver
     restart: always
