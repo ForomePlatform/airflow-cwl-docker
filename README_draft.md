@@ -27,10 +27,10 @@ environment. These projects can be installed using Git submodules functionality.
 
 ###### This dockercompose supports four modes:
 
-1. Airflow with Conda and with Postges (by default)
-2. Airflow without Conda and with Postges
-3. Airflow with Conda and without Postges
-4. Airflow without Conda and without Postges
+1. Airflow with Conda and with Postgres (by default)
+2. Airflow without Conda and with Postgres
+3. Airflow with Conda and without Postgres
+4. Airflow without Conda and without Postgres
 
 > **_NOTE:_** For choosing start mode uses the next options:
 >```
@@ -47,7 +47,7 @@ In the root folder of project four files with the example .env file for the dock
 .env_example_postgres_noconda
 ```
 Choose the right for you and rename it to ".env".
-As example for second mode "without Conda and with Postges")
+As example for second mode "without Conda and with Postgres")
 ```
 cp -r .env_example_postgres_noconda .env
 ```
