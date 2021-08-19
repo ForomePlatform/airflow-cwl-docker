@@ -104,6 +104,10 @@ If you want to override some params, edit .env file in the root folder.
 >export POSTGRE_USER=airflow
 >export POSTGRE_PASS=airflow
 >```
+>Source this file:
+>```
+>source .env
+>```
 >And restart conteiners
 >`docker-compose down && docker-compose up`
 
