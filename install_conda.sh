@@ -37,16 +37,9 @@ do
   echo 'from /root/anaconda/etc/profile.d/conda.sh'
   conda activate ${cenv}
   echo "Installing conda packages"
-  conda install -y --name ${cenv} -c conda-forge psycopg2 numpy scipy dataclasses r rpy2
+  conda install -y --name ${cenv} -c conda-forge r-remotes r-optparse psycopg2 numpy scipy dataclasses r rpy2
   if command -v R &> /dev/null
   then
-    echo "Installing R packages"
-    while read -r package; do
-      echo "Installing R package: $package"
-      export R_SCRIPT_INSTALL="install.packages(\"$package\", repos='http://cran.us.r-project.org')"
-      echo "command to install: ${R_SCRIPT_INSTALL}"
-      R -e "${R_SCRIPT_INSTALL}"
-    done < r-packages.txt
     while read -r package; do
       echo "Installing R package from GitHub: $package"
       export R_SCRIPT_INSTALL1="remotes::install_github(\"$package\", repos='http://cran.us.r-project.org')"
@@ -55,7 +48,7 @@ do
     done < r-github-packages.txt
   fi
   install_cwl_airflow.sh
-  install_local.sh
+  install_projects.sh
   echo '#!/bin/bash' > /usr/bin/RScript
   echo 'exec conda run --no-capture-output -n $CONDA_ENV Rscript "$@"' >> /usr/bin/Rscript
   chmod a+x /usr/bin/Rscript

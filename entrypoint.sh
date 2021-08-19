@@ -22,8 +22,8 @@ then
     set -e
     export PATH=${HOME}/anaconda/condabin/:$PATH:${HOME}/anaconda/envs/${CONDA_ENV}/bin:${HOME}/anaconda/bin
 # activate conda environment and let the following process take over
-    exec conda run --no-capture-output -n ${CONDA_ENV} "airflow users create --username $_AIRFLOW_WWW_USER_USERNAME --password $_AIRFLOW_WWW_USER_PASSWORD -r Admin"
-    exec conda run --no-capture-output -n ${CONDA_ENV} "airflow db upgrade"
+    #exec conda run --no-capture-output -n ${CONDA_ENV} airflow users create --username $_AIRFLOW_WWW_USER_USERNAME --password $_AIRFLOW_WWW_USER_PASSWORD -r Admin -e 1@example.com -f Airflow -l Airflow
+    #exec conda run --no-capture-output -n ${CONDA_ENV} airflow db upgrade
     exec conda run --no-capture-output -n ${CONDA_ENV} "$@"
 
 else
