@@ -27,10 +27,10 @@ environment. These projects can be installed using Git submodules functionality.
 
 ###### This dockercompose supports four modes:
 
-1. Airflow with Conda and with Postges (by default)
-2. Airflow without Conda and with Postges
-3. Airflow with Conda and without Postges
-4. Airflow without Conda and without Postges
+1. Airflow with Conda and with Postgres (by default)
+2. Airflow without Conda and with Postgres
+3. Airflow with Conda and without Postgres
+4. Airflow without Conda and without Postgres
 
 > **_NOTE:_** For choosing start mode uses the next options:
 >```
@@ -47,7 +47,7 @@ In the root folder of project four files with the example .env file for the dock
 .env_example_postgres_noconda
 ```
 Choose the right for you and rename it to ".env".
-As example for second mode "without Conda and with Postges")
+As example for second mode "without Conda and with Postgres")
 ```
 cp -r .env_example_postgres_noconda .env
 ```
@@ -100,9 +100,13 @@ If you want to override some params, edit .env file in the root folder.
 > _Changing base url and www username and password_
 > Add next lines to the .env file:
 >```
->BASE_URL=http://yourdomain.com
->POSTGRE_USER: airflow
->POSTGRE_PASS: airflow
+>export BASE_URL=http://yourdomain.com
+>export POSTGRE_USER=airflow
+>export POSTGRE_PASS=airflow
+>```
+>Source this file:
+>```
+>source .env
 >```
 >And restart conteiners
 >`docker-compose down && docker-compose up`
@@ -127,3 +131,11 @@ Console mode
 > `docker-compose down`
 > 4. To delete all images and containers:
 > `docker system prune -a`
+
+#### After starting containers
+If you have a problem with login and logs in contaners say about "relation does not exist" execute this:
+
+>```
+>docker exec -it scheduler entrypoint.sh >airflow db upgrade
+>docker exec -it webserver entrypoint.sh >airflow db upgrade
+>```
