@@ -100,9 +100,9 @@ If you want to override some params, edit .env file in the root folder.
 > _Changing base url and www username and password_
 > Add next lines to the .env file:
 >```
->BASE_URL=http://yourdomain.com
->POSTGRE_USER: airflow
->POSTGRE_PASS: airflow
+>export BASE_URL=http://yourdomain.com
+>export POSTGRE_USER=airflow
+>export POSTGRE_PASS=airflow
 >```
 >And restart conteiners
 >`docker-compose down && docker-compose up`
@@ -127,3 +127,11 @@ Console mode
 > `docker-compose down`
 > 4. To delete all images and containers:
 > `docker system prune -a`
+
+#### After starting containers
+If you have a problem with login and logs in contaners say about "relation does not exist" execute this:
+
+>```
+>docker exec -it scheduler entrypoint.sh >airflow db upgrade
+>docker exec -it webserver entrypoint.sh >airflow db upgrade
+>```
