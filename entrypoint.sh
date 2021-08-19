@@ -1,4 +1,5 @@
 #!/bin/bash --login
+
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -16,9 +17,17 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-
-set -e
-export PATH=${HOME}/anaconda/condabin/:$PATH:${HOME}/anaconda/envs/${CONDA_ENV}/bin:${HOME}/anaconda/bin
+if [ "$conda" = "true" ] ;
+then
+    set -e
+    export PATH=${HOME}/anaconda/condabin/:$PATH:${HOME}/anaconda/envs/${CONDA_ENV}/bin:${HOME}/anaconda/bin
 # activate conda environment and let the following process take over
+    exec conda run --no-capture-output -n ${CONDA_ENV} "airflow users create --username $_AIRFLOW_WWW_USER_USERNAME --password $_AIRFLOW_WWW_USER_PASSWORD -r Admin"
+    exec conda run --no-capture-output -n ${CONDA_ENV} "airflow db upgrade"
+    exec conda run --no-capture-output -n ${CONDA_ENV} "$@"
 
-exec conda run --no-capture-output -n ${CONDA_ENV} "$@"
+else
+    airflow users create --username $_AIRFLOW_WWW_USER_USERNAME --password $_AIRFLOW_WWW_USER_PASSWORD -r Admin
+    airflow db upgrade
+    exec "$@"
+fi

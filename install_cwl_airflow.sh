@@ -20,10 +20,10 @@
 
 echo "Installing cwl-airflow"
 cd /cwl-airflow || exit
-pip3 install .
-pip3 install --upgrade apache-airflow-providers-google
-pip3 install --upgrade cwltool cwlref-runner wheel
-pip3 install -r requirements.txt
-pip3 install SQLAlchemy==1.3.23 --force-reinstall
+pip3 install . --use-feature=2020-resolver
+pip3 install --upgrade apache-airflow-providers-google --use-feature=2020-resolver
+pip3 install --upgrade cwltool cwlref-runner wheel --use-feature=2020-resolver
+pip3 install -r requirements.txt --use-feature=2020-resolver
+pip3 install psycopg2-binary --use-feature=2020-resolver
+pip3 install SQLAlchemy==1.3.23 --force-reinstall --use-feature=2020-resolver
 cd ~ || exit
-echo 'build ended'

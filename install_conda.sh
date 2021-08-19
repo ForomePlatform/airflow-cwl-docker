@@ -27,9 +27,9 @@ export PATH=${HOME}/anaconda/condabin:$PATH
 pip3 uninstall -y typing
 cd /dependencies/ || exit
 echo 'installing default conda environments'
-for cenv_file in *.yaml
+for cenv_file in $(ls . | grep "yml\|yaml")
 do
-  cenv=${cenv_file%.yaml}
+  cenv=${cenv_file%.*}
   echo $cenv
   #conda create -y --name $cenv  python=3.8
   conda env create -f ${cenv_file}
@@ -43,15 +43,19 @@ do
     echo "Installing R packages"
     while read -r package; do
       echo "Installing R package: $package"
-      R -e "install.packages($package, repos='http://cran.us.r-project.org')"
+      export R_SCRIPT_INSTALL="install.packages(\"$package\", repos='http://cran.us.r-project.org')"
+      echo "command to install: ${R_SCRIPT_INSTALL}"
+      R -e "${R_SCRIPT_INSTALL}"
     done < r-packages.txt
     while read -r package; do
       echo "Installing R package from GitHub: $package"
-      R -e "remotes::install_github($package, repos='http://cran.us.r-project.org')"
+      export R_SCRIPT_INSTALL1="remotes::install_github(\"$package\", repos='http://cran.us.r-project.org')"
+      echo "command to install: ${R_SCRIPT_INSTALL1}"
+      R -e "${R_SCRIPT_INSTALL1}"
     done < r-github-packages.txt
   fi
-  bash install_cwl_airflow
-  bash install_local
+  install_cwl_airflow.sh
+  install_local.sh
   echo '#!/bin/bash' > /usr/bin/RScript
   echo 'exec conda run --no-capture-output -n $CONDA_ENV Rscript "$@"' >> /usr/bin/Rscript
   chmod a+x /usr/bin/Rscript
