@@ -2,6 +2,9 @@
 
 ## Possible Configurations
 
+>**NB**: The docker-compose.yaml in this project uses profiles and therefore
+> requires **docker-compose utility version 1.28+**
+
 Airflow requires a relational database management system (RDBMS) to 
 store and manage states of the running pipelines. This configuration
 assumes that the RDBMS in use is [PostgreSQL](https://www.postgresql.org/).
@@ -187,7 +190,7 @@ docker-compose build
 > you must completely rebuild containers, clearing the cahce. Use 
 > the following command:**
 
-      `docker-compose down && docker-compose build --no-cache`
+      docker-compose down && docker-compose build --no-cache
 
 ## Starting up the containers
 
