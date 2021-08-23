@@ -33,9 +33,10 @@ environment. These projects can be installed using Git submodules functionality.
 4. Airflow without Conda and without Postgres
 
 > **_NOTE:_** For choosing start mode uses the next options:
+>(export this vars in bash)
 >```
->compose_profiles [postgres,null] 
->conda [true,false]
+>COMPOSE_PROFILES [postgres,null] 
+>CONDA_CHECK [true,false]
 >```
 
 
@@ -100,16 +101,12 @@ If you want to override some params, edit .env file in the root folder.
 > _Changing base url and www username and password_
 > Add next lines to the .env file:
 >```
->export BASE_URL=http://yourdomain.com
->export POSTGRE_USER=airflow
->export POSTGRE_PASS=airflow
->```
->Source this file:
->```
->source .env
+>BASE_URL=http://yourdomain.com
+>POSTGRE_USER=airflow
+>POSTGRE_PASS=airflow
 >```
 >And restart conteiners
->`docker-compose down && docker-compose up`
+>`docker-compose down && docker-compose --env-file ./.env up`
 
 #### Starting
 Daemon mode
@@ -136,6 +133,6 @@ Console mode
 If you have a problem with login and logs in contaners say about "relation does not exist" execute this:
 
 >```
->docker exec -it scheduler entrypoint.sh >airflow db upgrade
->docker exec -it webserver entrypoint.sh >airflow db upgrade
+>docker exec -it scheduler entrypoint.sh airflow db upgrade
+>docker exec -it webserver entrypoint.sh airflow db upgrade
 >```

@@ -17,7 +17,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-if [ "$conda" = "true" ] ;
+if [ "$CONDA_CHECK" = "true" ] ;
 then
     set -e
     export PATH=${HOME}/anaconda/condabin/:$PATH:${HOME}/anaconda/envs/${CONDA_ENV}/bin:${HOME}/anaconda/bin
