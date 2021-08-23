@@ -145,7 +145,7 @@ of each file:
 
       ###
       COMPOSE_PROFILES=[/postgres]
-      conda=[true/false]
+      CONDA_CHECK=[true/false]
       ###
    
 
@@ -186,7 +186,9 @@ Simply run the build command:
 ```
 docker-compose build
 ```
-> **_NB:_ If you have changed the configuration mode, 
+> **_NB:_ 
+>1. export CONDA_CHECK variable before building 
+>2. If you have changed the configuration mode, 
 > you must completely rebuild containers, clearing the cahce. Use 
 > the following command:**
 
@@ -214,22 +216,18 @@ export POSTGRE_PASS=airflow
 
 ### Starting Up
 
-Source the `.env` file:
-```
-source .env
-```
 
 Then, restart containers
 
-`docker-compose down && docker-compose up`
+`docker-compose down && docker-compose --env-file ./.env up`
 
 #### Daemon mode
 
-`docker-compose -d up`
+`docker-compose --env-file ./.env -d up`
 
 Console mode
 
-`docker-compose up`
+`docker-compose --env-file ./.env up`
 
 
 #### After starting containers
@@ -266,7 +264,7 @@ If you have a problem with login and logs in contaners say about "relation does 
 If you want to override some params, see the section environment 
 in docker-compose.yaml.
 
-###Full list of variables avalable for overriding via export
+###Full list of variables avalable for overriding via export (or in .env file)
 
 ```
 ### Available options and default values

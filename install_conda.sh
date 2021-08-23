@@ -37,7 +37,7 @@ do
   echo 'from /root/anaconda/etc/profile.d/conda.sh'
   conda activate ${cenv}
   echo "Installing conda packages"
-  conda install -y --name ${cenv} -c conda-forge r-remotes r-optparse psycopg2 numpy scipy dataclasses r rpy2
+  conda install -y --name ${cenv} -c conda-forge r-remotes r-optparse numpy scipy dataclasses r rpy2
   if command -v R &> /dev/null
   then
     while read -r package; do

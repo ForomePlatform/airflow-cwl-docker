@@ -19,7 +19,8 @@
 
 FROM ubuntu:20.04
 USER root
-ARG conda=true
+ARG CONDA_CHECK=true
+ENV CONDA_CHECK=${CONDA_CHECK}
 
 COPY install_*.sh /usr/bin/
 COPY entrypoint.sh /usr/bin/
@@ -43,7 +44,7 @@ RUN apt-get update && apt-get install -y curl unzip zip wget ca-certificates pyt
 
 ENTRYPOINT [ "entrypoint.sh" ]
 
-RUN if [ "$conda" == "true" ] ; then install_conda.sh ; \
+RUN if [ "$CONDA_CHECK" == "true" ] ; then install_conda.sh ; \
         else python3 -m pip install --upgrade pip && install_cwl_airflow.sh && install_projects.sh ; \
     fi
 ENV PATH=$PATH:/root/anaconda/condabin/:$PATH:/root/anaconda/envs/${CONDA_ENV}/bin:/root/anaconda/bin
