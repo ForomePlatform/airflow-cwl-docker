@@ -28,7 +28,7 @@ COPY entrypoint.sh /usr/bin/
 COPY cwl-airflow /cwl-airflow
 COPY requirements.txt /
 COPY project /dependencies
-COPY r-* /dependencies
+COPY r-* /dependencies/
 
 SHELL [ "/bin/bash", "--login" ,"-c" ]
 RUN apt-get update && apt-get install -y curl unzip zip wget ca-certificates python3-pip \
