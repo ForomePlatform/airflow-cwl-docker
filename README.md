@@ -92,14 +92,11 @@ to be done.
 Only if you need to adjust authentication settings, follow these steps
 or execute a similar procedure:
 
-1. Create docker network
-
-`docker network create --gateway 172.18.0.1 --subnet 172.18.0.0/24 airflownetwork`
+1. docker-compose will create network with subnet 172.16.238.0/24 and gateway 172.16.238.1/32 (it works in both beses: PostgreSQL on host and PostgreSQL in container).
 
 2. Configure authentication in `pg_hba.conf`
 
-        host    all             all             172.18.0.77/32          password
-        host    all             all             172.18.0.99/32          password
+        host    all             all             172.16.238.0/24         password
 
 3. Configure listening address in `postgresql.conf` and restart PostgreSQL
 
@@ -164,7 +161,7 @@ the shell used to run docker commands
 
 If you created custom docker network, your PostgreSQL server address 
 is defined by `gateway` option in `docker network create` command (see above,
-where it is set to `172.18.0.1`). Alternatively, it is normally, `172.17.0.1`
+where it is set to `172.16.238.1`). Alternatively, it is normally, `172.17.0.1`
 
     export POSTGRE_SERVER=172.17.0.1  
     ## or export POSTGRE_SERVER=172.18.0.1
@@ -264,7 +261,7 @@ If you have a problem with login and logs in contaners say about "relation does 
 If you want to override some params, see the section environment 
 in docker-compose.yaml.
 
-###Full list of variables avalable for overriding via export (or in .env file)
+### Full list of variables avalable for overriding via export (or in .env file)
 
 ```
 ### Available options and default values
@@ -295,6 +292,21 @@ in docker-compose.yaml.
 # CWL_OUTPUTS_FOLDER:-./cwl_outputs_folder
 # CWL_PICKLE_FOLDER:-./cwl_pickle_folder
 ```
-
-
-
+### Example of .env file. Ready to run containers
+> Attention! Some pathes are needed to be replaced
+```
+COMPOSE_PROFILES=
+CONDA_CHECK="true"
+POSTGRE_SERVER="172.16.238.1"
+POSTGRE_DB=airflow
+POSTGRE_USER=airflow
+POSTGRE_PASS=airflow
+PROJECT_DIR=/home/user/project
+DAGS_DIR=/home/user/project/examples
+LOGS_DIR=/home/user/airflow-logs
+CWL_TMP_FOLDER=/home/user/cwl_tmp_folder
+CWL_INPUTS_FOLDER=/home/user/cwl_inputs_folder
+CWL_OUTPUTS_FOLDER=/home/user/cwl_outputs_folder
+CWL_PICKLE_FOLDER=/home/user/cwl_pickle_folder
+CONDA_ENV="MyEnv"
+```
