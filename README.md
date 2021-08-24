@@ -1,5 +1,33 @@
 # Apache Airflow + CWL-Airflow in Docker with Optional Conda and R
 
+- [Apache Airflow + CWL-Airflow in Docker with Optional Conda and R](#apache-airflow--cwl-airflow-in-docker-with-optional-conda-and-r)
+  * [Possible Configurations](#possible-configurations)
+  * [Before building the containers](#before-building-the-containers)
+    + [Configure Git submodules](#configure-git-submodules)
+    + [Configuring PostgreSQL](#configuring-postgresql)
+      - [Create database and user for Airflow](#create-database-and-user-for-airflow)
+      - [Configure PostgreSQL to authenticate Airflow user](#configure-postgresql-to-authenticate-airflow-user)
+    + [Setup Environment Variables](#setup-environment-variables)
+      - [Selecting configuration mode](#selecting-configuration-mode)
+      - [Environment variables that commonly require changing](#environment-variables-that-commonly-require-changing)
+  * [Building Containers](#building-containers)
+  * [Starting up the containers](#starting-up-the-containers)
+    + [Post-build configuration](#post-build-configuration)
+      - [Overriding BASE_URL](#overriding-base_url)
+      - [Database authentication](#database-authentication)
+    + [Starting Up](#starting-up)
+      - [Daemon mode](#daemon-mode)
+      - [Console mode](#console-mode)
+      - [After starting containers](#after-starting-containers)
+  * [Some useful commands:](#some-useful-commands)
+    + [To view logs of the running containers:](#to-view-logs-of-the-running-containers)
+    + [To attach to the started container (bash)](#to-attach-to-the-started-container-bash)
+    + [To stop all your containers:](#to-stop-all-your-containers)
+    + [To delete all images and containers:](#to-delete-all-images-and-containers)
+  * [Overriding default parameters](#overriding-default-parameters)
+    + [Full list of avalable environment variables](#full-list-of-avalable-environment-variables)
+    + [Example of .env file. Ready to run containers](#example-of-env-file-ready-to-run-containers)MishaMBP5(misha)~/har
+
 ## Possible Configurations
 
 >**NB**: The docker-compose.yaml in this project uses profiles and therefore
@@ -92,7 +120,15 @@ to be done.
 Only if you need to adjust authentication settings, follow these steps
 or execute a similar procedure:
 
-1. docker-compose will create network with subnet 172.16.238.0/24 and gateway 172.16.238.1/32 (it works in both beses: PostgreSQL on host and PostgreSQL in container).
+1. Ensure, that network, created by docker for Airflow containers
+can be authenticated by PostgreSQL.
+
+By default, docker-compose creates network with subnet 172.16.238.0/24 
+and gateway 172.16.238.1/32 (it works in both modes: PostgreSQL 
+on the host and PostgreSQL in a container).
+
+If you need to change these network parameters, edit `networks` section in
+`docker-compose.yaml`, at the bottom of the file.
 
 2. Configure authentication in `pg_hba.conf`
 
@@ -174,7 +210,7 @@ username and password for the database authentication, used by Airflow.
     export POSTGRE_PASS=airflow
 
 More advanced options are listed in the 
-[appendix](#Full list of variables avalable for overriding via export)
+[appendix](#Full list of variables available for overriding via export)
 
 ## Building Containers
 
@@ -183,11 +219,11 @@ Simply run the build command:
 ```
 docker-compose build
 ```
-> **_NB:_ 
+> _**NB:**_ 
 >1. export CONDA_CHECK variable before building 
 >2. If you have changed the configuration mode, 
-> you must completely rebuild containers, clearing the cahce. Use 
-> the following command:**
+> you must completely rebuild containers, clearing the cache. Use 
+> the following command:
 
       docker-compose down && docker-compose build --no-cache
 
@@ -213,8 +249,10 @@ export POSTGRE_PASS=airflow
 
 ### Starting Up
 
+Export any of the environment variables that are not included 
+in `.env` file. 
 
-Then, restart containers
+Restart the containers
 
 `docker-compose down && docker-compose --env-file ./.env up`
 
@@ -222,7 +260,7 @@ Then, restart containers
 
 `docker-compose --env-file ./.env -d up`
 
-Console mode
+#### Console mode
 
 `docker-compose --env-file ./.env up`
 
@@ -261,7 +299,10 @@ If you have a problem with login and logs in contaners say about "relation does 
 If you want to override some params, see the section environment 
 in docker-compose.yaml.
 
-### Full list of variables avalable for overriding via export (or in .env file)
+### Full list of avalable environment variables 
+
+The following variables can be exported in the shell or updated in .env file
+to override their default values
 
 ```
 ### Available options and default values
