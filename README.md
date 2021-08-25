@@ -217,13 +217,15 @@ More advanced options are listed in the
 Simply run the build command:
 
 ```
-docker-compose build
+DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
 ```
 > _**NB:**_ 
->1. export CONDA_CHECK variable before building 
+>1. export CONDA_CHECK variable before building!!!
 >2. If you have changed the configuration mode, 
 > you must completely rebuild containers, clearing the cache. Use 
 > the following command:
+>3. Variable DOCKER_BUILDKIT=1 set Docker configuration to use buildkit (only during build)
+>4. Variable BUILDKIT_PROGRESS=plain set Docker configuration to use plain text progress output (only during build)
 
       docker-compose down && docker-compose build --no-cache
 
@@ -341,40 +343,24 @@ POSTGRE_SERVER="172.16.238.1"
 POSTGRE_DB=airflow
 POSTGRE_USER=airflow
 POSTGRE_PASS=airflow
-PROJECT_DIR=/home/user/project
-DAGS_DIR=/home/user/project/examples
-LOGS_DIR=/home/user/airflow-logs
-CWL_TMP_FOLDER=/home/user/cwl_tmp_folder
-CWL_INPUTS_FOLDER=/home/user/cwl_inputs_folder
-CWL_OUTPUTS_FOLDER=/home/user/cwl_outputs_folder
-CWL_PICKLE_FOLDER=/home/user/cwl_pickle_folder
-CONDA_ENV="MyEnv"
+PROJECT_DIR=./project
+DAGS_DIR=./dags
+LOGS_DIR=./airflow-logs
+CWL_TMP_FOLDER=./cwl_tmp_folder
+CWL_INPUTS_FOLDER=./cwl_inputs_folder
+CWL_OUTPUTS_FOLDER=./cwl_outputs_folder
+CWL_PICKLE_FOLDER=./cwl_pickle_folder
 ```
 
 ## Launch example (variant Non-conda+PostgreSQL on host, default subnet; also you can override dirs/IP)
 
 ### Content of .env file
-```
-COMPOSE_PROFILES=
-CONDA_CHECK="false"
-POSTGRE_SERVER="172.16.238.1"
-POSTGRE_DB=airflow
-POSTGRE_USER=airflow
-POSTGRE_PASS=airflow
-PROJECT_DIR=/home/user/project
-DAGS_DIR=/home/user/project/examples
-LOGS_DIR=/home/user/airflow-logs
-CWL_TMP_FOLDER=/home/user/cwl_tmp_folder
-CWL_INPUTS_FOLDER=/home/user/cwl_inputs_folder
-CWL_OUTPUTS_FOLDER=/home/user/cwl_outputs_folder
-CWL_PICKLE_FOLDER=/home/user/cwl_pickle_folder
-CONDA_ENV=""
-```
+
+See [Example of .env file](#example-of-env-file) and change value CONDA_CHECK to `"false"`
 
 ### Build image
 ```
 export CONDA_CHECK="false"
-export COMPOSE_PROFILES=""
 DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
 ```
 
