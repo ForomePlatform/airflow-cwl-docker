@@ -301,7 +301,7 @@ If you have a problem with login and logs in contaners say about "relation does 
 If you want to override some params, see the section environment 
 in docker-compose.yaml.
 
-### Full list of avalable environment variables 
+### Full list of available environment variables 
 
 The following variables can be exported in the shell or updated in .env file
 to override their default values
@@ -334,8 +334,8 @@ to override their default values
 # CWL_OUTPUTS_FOLDER="./cwl_outputs_folder"
 # CWL_PICKLE_FOLDER="./cwl_pickle_folder"
 ```
-### Example of .env file
-> Attention! Some pathes are needed to be replaced
+### Example of .env file. Ready to run containers
+> NB: Paths might be different for your environment
 ```
 COMPOSE_PROFILES=
 CONDA_CHECK="true"
