@@ -1,32 +1,69 @@
 # Apache Airflow + CWL-Airflow in Docker with Optional Conda and R
 
-- [Apache Airflow + CWL-Airflow in Docker with Optional Conda and R](#apache-airflow--cwl-airflow-in-docker-with-optional-conda-and-r)
-  * [Possible Configurations](#possible-configurations)
-  * [Before building the containers](#before-building-the-containers)
-    + [Configure Git submodules](#configure-git-submodules)
-    + [Configuring PostgreSQL](#configuring-postgresql)
-      - [Create database and user for Airflow](#create-database-and-user-for-airflow)
-      - [Configure PostgreSQL to authenticate Airflow user](#configure-postgresql-to-authenticate-airflow-user)
-    + [Setup Environment Variables](#setup-environment-variables)
-      - [Selecting configuration mode](#selecting-configuration-mode)
-      - [Environment variables that commonly require changing](#environment-variables-that-commonly-require-changing)
-  * [Building Containers](#building-containers)
-  * [Starting up the containers](#starting-up-the-containers)
-    + [Post-build configuration](#post-build-configuration)
-      - [Overriding BASE_URL](#overriding-base_url)
-      - [Database authentication](#database-authentication)
-    + [Starting Up](#starting-up)
-      - [Daemon mode](#daemon-mode)
-      - [Console mode](#console-mode)
-      - [After starting containers](#after-starting-containers)
-  * [Some useful commands:](#some-useful-commands)
-    + [To view logs of the running containers:](#to-view-logs-of-the-running-containers)
-    + [To attach to the started container (bash)](#to-attach-to-the-started-container-bash)
-    + [To stop all your containers:](#to-stop-all-your-containers)
-    + [To delete all images and containers:](#to-delete-all-images-and-containers)
-  * [Overriding default parameters](#overriding-default-parameters)
-    + [Full list of avalable environment variables](#full-list-of-avalable-environment-variables)
-    + [Example of .env file. Ready to run containers](#example-of-env-file-ready-to-run-containers)MishaMBP5(misha)~/har
+* [Quick Start](#quick-start)
+  + [Without Conda](#without-conda)
+  + [With Conda:](#with-conda)
+* [Possible Configurations](#possible-configurations)
+* [Before building the containers](#before-building-the-containers)
+  + [Configure Git submodules](#configure-git-submodules)
+  + [Configuring PostgreSQL](#configuring-postgresql)
+    - [Create database and user for Airflow](#create-database-and-user-for-airflow)
+    - [Configure PostgreSQL to authenticate Airflow user](#configure-postgresql-to-authenticate-airflow-user)
+  + [Setup Environment Variables](#setup-environment-variables)
+    - [Selecting configuration mode](#selecting-configuration-mode)
+    - [Environment variables that commonly require changing](#environment-variables-that-commonly-require-changing)
+* [Building Containers](#building-containers)
+* [Starting up the containers](#starting-up-the-containers)
+  + [Post-build configuration](#post-build-configuration)
+    - [Overriding BASE_URL](#overriding-base_url)
+    - [Database authentication](#database-authentication)
+  + [Starting Up](#starting-up)
+    - [Daemon mode](#daemon-mode)
+    - [Console mode](#console-mode)
+    - [After starting containers](#after-starting-containers)
+* [Some useful commands:](#some-useful-commands)
+  + [To view logs of the running containers:](#to-view-logs-of-the-running-containers)
+  + [To attach to the started container (bash)](#to-attach-to-the-started-container-bash)
+  + [To stop all your containers:](#to-stop-all-your-containers)
+  + [To delete all images and containers:](#to-delete-all-images-and-containers)
+* [Overriding default parameters](#overriding-default-parameters)
+  + [Full list of available environment variables](#full-list-of-available-environment-variables)
+  + [Example of .env file. Ready to run containers](#example-of-env-file-ready-to-run-containers)
+
+## Quick Start
+
+If you have a clean VM, where you want to install CWL-Airflow 
+without any 
+customizations, just issue the following commands:
+
+### Without Conda
+The simplest configuration without Conda:
+
+    git clone https://github.com/ForomePlatform/airflow-cwl-docker.git
+    git submodule update --init --recursive
+    cp .env_example_postgres_noconda .env
+    source .env
+    DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
+    docker-compose --env-file ./.env up -d
+    
+### With Conda:
+If you need to use CWL-Airflow in Conda environment, then instead of 
+
+    cp .env_example_postgres_noconda .env
+use
+
+    cp .env_example_postgres_conda .env
+                                         
+Please note, that Conda installation might take about an hour.
+
+Full sequence of commands to copy and paste:
+
+    git clone https://github.com/ForomePlatform/airflow-cwl-docker.git
+    git submodule update --init --recursive
+    cp .env_example_postgres_conda .env
+    source .env
+    DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
+    docker-compose --env-file ./.env up -d
 
 ## Possible Configurations
 
@@ -214,18 +251,30 @@ More advanced options are listed in the
 
 ## Building Containers
 
-Simply run the build command:
+Export CONDA_CHECK variable either by sourcing your `.env` file
+or by giving one of the export commands below:
+
+```
+EXPORT CONDA_CHECK="false"
+EXPORT CONDA_CHECK="true"
+```
+
+Then, run the build command:
 
 ```
 DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
 ```
-> _**NB:**_ 
->1. export CONDA_CHECK variable before building!!!
->2. If you have changed the configuration mode, 
+Variable DOCKER_BUILDKIT=1 set Docker configuration to use 
+buildkit (only during build)
+
+Variable BUILDKIT_PROGRESS=plain set Docker configuration 
+to use plain text progress output (only during build)
+
+
+> _**NB:**_
+> If you have changed the configuration mode, 
 > you must completely rebuild containers, clearing the cache. Use 
 > the following command:
->3. Variable DOCKER_BUILDKIT=1 set Docker configuration to use buildkit (only during build)
->4. Variable BUILDKIT_PROGRESS=plain set Docker configuration to use plain text progress output (only during build)
 
       docker-compose down && docker-compose build --no-cache
 
@@ -335,7 +384,7 @@ to override their default values
 # CWL_PICKLE_FOLDER="./cwl_pickle_folder"
 ```
 ### Example of .env file. Ready to run containers
-> NB: Paths might be different for your environment
+> NB: Values might be different for your environment
 ```
 COMPOSE_PROFILES=
 CONDA_CHECK="true"
@@ -350,21 +399,4 @@ CWL_TMP_FOLDER=./cwl_tmp_folder
 CWL_INPUTS_FOLDER=./cwl_inputs_folder
 CWL_OUTPUTS_FOLDER=./cwl_outputs_folder
 CWL_PICKLE_FOLDER=./cwl_pickle_folder
-```
-
-## Launch example (variant Non-conda+PostgreSQL on host, default subnet; also you can override dirs/IP)
-
-### Content of .env file
-
-See [Example of .env file](#example-of-env-file) and change value CONDA_CHECK to `"false"`
-
-### Build image
-```
-export CONDA_CHECK="false"
-DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
-```
-
-### Start containers
-```
-docker-compose --env-file ./.env up -d
 ```
