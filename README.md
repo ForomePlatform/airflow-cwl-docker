@@ -236,7 +236,7 @@ If you created custom docker network, your PostgreSQL server address
 is defined by `gateway` option in `docker network create` command (see above,
 where it is set to `172.16.238.1`). Alternatively, it is normally, `172.17.0.1`
 
-    export POSTGRE_SERVER=172.17.0.1  
+    export POSTGRE_SERVER=172.16.238.1  
     ## or export POSTGRE_SERVER=172.18.0.1
 
 Most probably, for security reasons, you would want to change 
