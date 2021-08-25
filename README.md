@@ -1,5 +1,6 @@
 # Apache Airflow + CWL-Airflow in Docker with Optional Conda and R
 
+* [Prerequisites](#Prerequisites)
 * [Quick Start](#quick-start)
   + [Without Conda](#without-conda)
   + [With Conda:](#with-conda)
@@ -29,6 +30,11 @@
 * [Overriding default parameters](#overriding-default-parameters)
   + [Full list of available environment variables](#full-list-of-available-environment-variables)
   + [Example of .env file. Ready to run containers](#example-of-env-file-ready-to-run-containers)
+
+## Prerequisites 
+
+>**NB**: The docker-compose.yaml in this project uses profiles and therefore
+> requires **docker-compose utility version 1.28+**
 
 ## Quick Start
 
@@ -66,9 +72,6 @@ Full sequence of commands to copy and paste:
     docker-compose --env-file ./.env up -d
 
 ## Possible Configurations
-
->**NB**: The docker-compose.yaml in this project uses profiles and therefore
-> requires **docker-compose utility version 1.28+**
 
 Airflow requires a relational database management system (RDBMS) to 
 store and manage states of the running pipelines. This configuration
