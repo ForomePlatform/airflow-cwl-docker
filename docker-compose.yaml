@@ -48,7 +48,7 @@ x-aliases:
         AIRFLOW__WEBSERVER__BASE_URL: ${BASE_URL:-http://localhost:8080}
         AIRFLOW__LOGGING__BASE_LOG_FOLDER: "/opt/airflow/logs"
         PROJECT_DIR: "/opt/airflow/project"
-        CONDA_CHECK: "${CONDA:-true}"
+        CONDA_CHECK: "${CONDA_CHECK:-true}"
         CONDA_ENV: "${CONDA_ENV}"
         
 
