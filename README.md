@@ -269,15 +269,15 @@ Restart the containers
 If you have a problem with login and logs in contaners say about "relation does not exist" execute this:
 
 >```
->docker exec -it scheduler entrypoint.sh >airflow db upgrade
->docker exec -it webserver entrypoint.sh >airflow db upgrade
+>docker exec -it scheduler entrypoint.sh airflow db upgrade
+>docker exec -it webserver entrypoint.sh airflow db upgrade
 >```       
 
 ## Some useful commands:
 
 ### To view logs of the running containers:
       usage:
-          docker-compose logs {container_name}
+        docker-compose logs {container_name}
       example:
         docker-compose logs webserver
 
@@ -307,31 +307,30 @@ to override their default values
 ```
 ### Available options and default values
 ## Postgres
-# POSTGRE_USER: airflow
-# POSTGRE_PASS: airflow
-# POSTGRE_DB: airflow
-# POSTGRES_PORT: 5432
+# POSTGRE_USER=airflow
+# POSTGRE_PASS=airflow
+# POSTGRE_DB=airflow
+# POSTGRES_PORT=5432
 #
 ## Airflow parameters
-# POSTGRE_SERVER: postgres
-# WEB_SERVER_PORT: 8080
-# AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRE_USER:-airflow}:${POSTGRE_PASS:-airflow}@${POSTGRE_SERVER:-postgres}/${POSTGRE_DB:-airflow}
-# AIRFLOW_CONN_METADATA_DB: postgresql+psycopg2://${POSTGRE_USER:-airflow}:${POSTGRE_PASS:-airflow}@${POSTGRE_SERVER:-postgres}/${POSTGRE_DB:-airflow}
-# AIRFLOW_VAR__METADATA_DB_SCHEMA: ${POSTGRE_DB:-airflow}
-# AIRFLOW__CORE__LOAD_EXAMPLES: False
-# DAGS_FOLDER: /opt/airflow/dags
-# _AIRFLOW_WWW_USER_USERNAME: airflow
-# _AIRFLOW_WWW_USER_PASSWORD: airflow
-# BASE_URL: http://localhost:8080 - AIRFLOW__WEBSERVER__BASE_URL
+# POSTGRE_SERVER=postgres
+# WEB_SERVER_PORT=8080
+# AIRFLOW__CORE__LOAD_EXAMPLES="False"
+## DAGS_FOLDER -- Environment varibale inside container. Do not override if you set DAGS_DIR variable
+# DAGS_FOLDER="/opt/airflow/dags"
+# _AIRFLOW_WWW_USER_USERNAME="airflow"
+# _AIRFLOW_WWW_USER_PASSWORD="airflow"
+# BASE_URL="http://localhost:8080"
 #
 ### Mapped volumes
-# PROJECT_DIR: ./project
-# DAGS_DIR: ./dags
-# LOGS_DIR: ./airflow-logs
-# CWL_TMP_FOLDER:-./cwl_tmp_folder
-# CWL_INPUTS_FOLDER:-./cwl_inputs_folder
-# CWL_OUTPUTS_FOLDER:-./cwl_outputs_folder
-# CWL_PICKLE_FOLDER:-./cwl_pickle_folder
+# PROJECT_DIR="./project"
+## DAGS_DIR -- Environment varibale on host! Do not override if you set DAGS_FOLDER variable
+# DAGS_DIR="./dags"
+# LOGS_DIR="./airflow-logs"
+# CWL_TMP_FOLDER="./cwl_tmp_folder"
+# CWL_INPUTS_FOLDER="./cwl_inputs_folder"
+# CWL_OUTPUTS_FOLDER="./cwl_outputs_folder"
+# CWL_PICKLE_FOLDER="./cwl_pickle_folder"
 ```
 ### Example of .env file. Ready to run containers
 > Attention! Some pathes are needed to be replaced
@@ -350,4 +349,36 @@ CWL_INPUTS_FOLDER=/home/user/cwl_inputs_folder
 CWL_OUTPUTS_FOLDER=/home/user/cwl_outputs_folder
 CWL_PICKLE_FOLDER=/home/user/cwl_pickle_folder
 CONDA_ENV="MyEnv"
+```
+
+## Launch example (variant Non-conda+PostgreSQL on host, default subnet; also you can override dirs/IP)
+
+### Content of .env file
+```
+COMPOSE_PROFILES=
+CONDA_CHECK="false"
+POSTGRE_SERVER="172.16.238.1"
+POSTGRE_DB=airflow
+POSTGRE_USER=airflow
+POSTGRE_PASS=airflow
+PROJECT_DIR=/home/user/project
+DAGS_DIR=/home/user/project/examples
+LOGS_DIR=/home/user/airflow-logs
+CWL_TMP_FOLDER=/home/user/cwl_tmp_folder
+CWL_INPUTS_FOLDER=/home/user/cwl_inputs_folder
+CWL_OUTPUTS_FOLDER=/home/user/cwl_outputs_folder
+CWL_PICKLE_FOLDER=/home/user/cwl_pickle_folder
+CONDA_ENV=""
+```
+
+### Build image
+```
+export CONDA_CHECK="false"
+export COMPOSE_PROFILES=""
+DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
+```
+
+### Start containers
+```
+docker-compose --env-file ./.env up -d
 ```
