@@ -350,3 +350,35 @@ CWL_OUTPUTS_FOLDER=/home/user/cwl_outputs_folder
 CWL_PICKLE_FOLDER=/home/user/cwl_pickle_folder
 CONDA_ENV="MyEnv"
 ```
+
+## Launch example (variant Non-conda+PostgreSQL on host, default subnet; also you can override dirs/IP)
+
+### Content of .env file
+```
+COMPOSE_PROFILES=
+CONDA_CHECK="false"
+POSTGRE_SERVER="172.16.238.1"
+POSTGRE_DB=airflow
+POSTGRE_USER=airflow
+POSTGRE_PASS=airflow
+PROJECT_DIR=/home/user/project
+DAGS_DIR=/home/user/project/examples
+LOGS_DIR=/home/user/airflow-logs
+CWL_TMP_FOLDER=/home/user/cwl_tmp_folder
+CWL_INPUTS_FOLDER=/home/user/cwl_inputs_folder
+CWL_OUTPUTS_FOLDER=/home/user/cwl_outputs_folder
+CWL_PICKLE_FOLDER=/home/user/cwl_pickle_folder
+CONDA_ENV=""
+```
+
+### Build image
+```
+export CONDA_CHECK="false"
+export COMPOSE_PROFILES=""
+DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
+```
+
+### Start containers
+```
+docker-compose --env-file ./.env up -d
+```
