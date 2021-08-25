@@ -356,7 +356,7 @@ CWL_PICKLE_FOLDER=./cwl_pickle_folder
 
 ### Content of .env file
 
-See [Example of .env file](#example-of-env-file) and change value CONDA_CHECK to `"false"`
+See [Example of .env file](#example-of-env-file-ready-to-run-containers) and change value CONDA_CHECK to `"false"`
 
 ### Build image
 ```
