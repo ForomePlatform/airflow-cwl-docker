@@ -57,12 +57,21 @@ customizations, just issue the following commands:
 The simplest configuration without Conda:
 
     git clone https://github.com/ForomePlatform/airflow-cwl-docker.git
+    cd airflow-cwl-docker
     git submodule update --init --recursive
     cp .env_example_postgres_noconda .env
     source .env
     DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
     docker-compose --env-file ./.env up -d
-    
+                                                  
+The whole process should take about 15 minutes on a stable Internet
+connection.
+                 
+You can test the installation as described in 
+[Testing Installation](#Testing the installation) section. The first two 
+examples should run in both command-line mode and in Airflow UI. 
+The third example requires Conda.
+
 ### With Conda:
 If you need to use CWL-Airflow in Conda environment, then instead of 
 
@@ -76,11 +85,16 @@ Please note, that Conda installation might take about an hour.
 Full sequence of commands to copy and paste:
 
     git clone https://github.com/ForomePlatform/airflow-cwl-docker.git
+    cd airflow-cwl-docker
     git submodule update --init --recursive
     cp .env_example_postgres_conda .env
     source .env
     DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
     docker-compose --env-file ./.env up -d
+
+You can test the installation as described in 
+[Testing Installation](#Testing the installation) section. All three 
+examples should run in both command-line mode and in Airflow UI.
 
 ## Possible Configurations
 
@@ -414,3 +428,55 @@ CWL_INPUTS_FOLDER=./cwl_inputs_folder
 CWL_OUTPUTS_FOLDER=./cwl_outputs_folder
 CWL_PICKLE_FOLDER=./cwl_pickle_folder
 ```
+
+## Testing the installation
+### Included examples
+                       
+This distribution include 3 tests:
+
+- Basic CWL, aka "Hello World" example
+- CWL, using a python project
+- CWL, using an R program
+
+The first two examples should run in all modes, the third requires
+conda environment.
+
+The examples should run in both command-line mode (from a terminal) 
+and in Airflow UI.
+
+### Testing command line mode
+#### Entering container command line environment
+
+Execute the following command to enter the container:
+
+    docker exec -it webserver bash
+
+> You might need to use sudo to run docker commands:
+>
+>>    sudo docker exec -it webserver bash
+
+#### Test 1: basic CWL (Hello World)
+              
+In the container execute:
+
+    cwl-runner /dependencies/examples/1st-tool.cwl /dependencies/examples/echo-job.yaml
+
+Look for the words "Hello World" and a message:
+
+    INFO Final process status is success
+
+#### Test 2: CWL, using python project 
+              
+In the container execute:
+
+    cwl-runner /dependencies/examples/pi.cwl --iterations 1000
+
+Look for the words a message:
+
+    INFO [job calculate] /tmp/l416_dsl$ python \
+        -m \
+        pi \
+        1000
+    3.140592653839794
+    ...
+    INFO Final process status is success
