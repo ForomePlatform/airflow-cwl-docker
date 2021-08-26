@@ -35,6 +35,17 @@
 
 >**NB**: The docker-compose.yaml in this project uses profiles and therefore
 > requires **docker-compose utility version 1.28+**
+ 
+Installation of CWL-Airflow on a dedicated host should be trivial and 
+by and large should be covered by the [Quick Start](#Quick Start) section 
+with possible customizations described in 
+[Common Environment variables](#Environment variables that commonly require changing)
+and [more advanced](#Full list of available environment variables ) 
+options sections.
+
+However, if the host where you are installing CWL-Airflow is shared with other 
+applications, especially those, using PostgreSQL, you should read this manual
+carefully.
 
 ## Quick Start
 
