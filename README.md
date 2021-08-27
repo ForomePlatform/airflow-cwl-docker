@@ -63,6 +63,7 @@ The simplest configuration without Conda:
     source .env
     DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
     docker-compose --env-file ./.env up -d
+    sudo cp -rf ./project/examples/* ./dags
                                                   
 The whole process should take about 15 minutes on a stable Internet
 connection.
@@ -91,6 +92,7 @@ Full sequence of commands to copy and paste:
     source .env
     DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
     docker-compose --env-file ./.env up -d
+    sudo cp -rf ./project/examples/* ./dags
 
 You can test the installation as described in 
 [Testing Installation](#Testing the installation) section. All three 
