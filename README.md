@@ -350,7 +350,13 @@ If you have a problem with login and logs in contaners say about "relation does 
 >```
 >docker exec -it scheduler entrypoint.sh airflow db upgrade
 >docker exec -it webserver entrypoint.sh airflow db upgrade
->```       
+>```     
+
+If you have a problem with login and logs in contaners say about "No user yet created" execute this:
+
+>```
+>docker exec -it scheduler entrypoint.sh airflow users create --username $_AIRFLOW_WWW_USER_USERNAME --password $_AIRFLOW_WWW_USER_PASSWORD -r Admin -e 1@example.com -f Airflow -l Airflow
+>```
 
 ## Some useful commands:
 
