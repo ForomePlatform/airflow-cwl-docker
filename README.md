@@ -1,9 +1,9 @@
 # Apache Airflow + CWL-Airflow in Docker with Optional Conda and R
 
-* [Prerequisites](#Prerequisites)
+* [Prerequisites](#prerequisites)
 * [Quick Start](#quick-start)
   + [Without Conda](#without-conda)
-  + [With Conda:](#with-conda)
+  + [With Conda](#with-conda)
 * [Possible Configurations](#possible-configurations)
 * [Before building the containers](#before-building-the-containers)
   + [Configure Git submodules](#configure-git-submodules)
@@ -25,16 +25,30 @@
 * [Some useful commands:](#some-useful-commands)
   + [To view logs of the running containers:](#to-view-logs-of-the-running-containers)
   + [To attach to the started container (bash)](#to-attach-to-the-started-container-bash)
+  + [Attach to a container when it does not start](#attach-to-a-container-when-it-does-not-start)
   + [To stop all your containers:](#to-stop-all-your-containers)
   + [To delete all images and containers:](#to-delete-all-images-and-containers)
+  + [Upgrade Airflow Database](#upgrade-airflow-database)
+  + [Create Airflow user](#create-airflow-user)
 * [Overriding default parameters](#overriding-default-parameters)
   + [Full list of available environment variables](#full-list-of-available-environment-variables)
   + [Example of .env file. Ready to run containers](#example-of-env-file-ready-to-run-containers)
+* [Testing the installation](#testing-the-installation)
+  + [Included examples](#included-examples)
+  + [Testing command line mode](#testing-command-line-mode)
+    - [Entering container command line environment](#entering-container-command-line-environment)
+    - [Test 1: basic CWL (Hello World)](#test-1-basic-cwl-hello-world)
+    - [Test 2: CWL, using python project](#test-2-cwl-using-python-project)
+  + [Testing Airflow User Interface](#testing-airflow-user-interface)
+    - [Preparation](#preparation)
+    - [UI Test 1: basic CWL (Hello World)](#ui-test-1-basic-cwl-hello-world)
+    - [UI Test 2: CWL, using python project](#ui-test-2-cwl-using-python-project)
+
 
 ## Prerequisites 
 
 >**NB**: The docker-compose.yaml in this project uses profiles and therefore
-> requires **docker-compose utility version 1.28+**
+> requires **docker-compose utility version 1.29+**
  
 Installation of CWL-Airflow on a dedicated host should be trivial and 
 by and large should be covered by the [Quick Start](#Quick Start) section 
@@ -73,7 +87,7 @@ You can test the installation as described in
 examples should run in both command-line mode and in Airflow UI. 
 The third example requires Conda.
 
-### With Conda:
+### With Conda
 If you need to use CWL-Airflow in Conda environment, then instead of 
 
     cp .env_example_postgres_noconda .env
@@ -156,11 +170,11 @@ environment. These projects can be installed using Git submodules functionality.
 
 ### Configuring PostgreSQL
 
-The steps, described in this section, are only applicable if 
+**_The steps, described in this section, are only applicable if 
 you would like to reuse a PostgreSQL RDBMS already 
-installed on your system for Airflow. If you are using default 
+installed on your system for Airflow_**. If you are using default 
 configuration, when a new container with PostgreSQL is installed, then skip
-to [Environment Variables](#Setup Environment Variables) section.
+to the [Environment Variables](#Setup Environment Variables) section.
 
 The following subsections explain how 
 to configure existing PostgreSQL service to be used by Airflow.
@@ -270,11 +284,14 @@ where it is set to `172.16.238.1`). Alternatively, it is normally, `172.17.0.1`
     ## or export POSTGRE_SERVER=172.18.0.1
 
 Most probably, for security reasons, you would want to change 
-username and password for the database authentication, used by Airflow.
+username and password for the Airflow and for the 
+database authentication, used by Airflow.
 
     export POSTGRE_DB=airflow
     export POSTGRE_USER=airflow
     export POSTGRE_PASS=airflow
+    export _AIRFLOW_WWW_USER_USERNAME=airflow
+    export _AIRFLOW_WWW_USER_PASSWORD=airflow
 
 More advanced options are listed in the 
 [appendix](#Full list of variables available for overriding via export)
@@ -321,7 +338,7 @@ containers are built. Examples are:
       
 #### Database authentication
 
-> **As example**
+> **Example**
 ```
 export BASE_URL=http://yourdomain.com
 export POSTGRE_USER=airflow
@@ -347,18 +364,6 @@ Restart the containers
 
 
 #### After starting containers
-If you have a problem with login and logs in contaners say about "relation does not exist" execute this:
-
->```
->docker exec -it scheduler entrypoint.sh airflow db upgrade
->docker exec -it webserver entrypoint.sh airflow db upgrade
->```     
-
-If you have a problem with login and logs in contaners say about "No user yet created" execute this:
-
->```
->docker exec -it scheduler entrypoint.sh airflow users create --username $_AIRFLOW_WWW_USER_USERNAME --password $_AIRFLOW_WWW_USER_PASSWORD -r Admin -e 1@example.com -f Airflow -l Airflow
->```
 
 ## Some useful commands:
 
@@ -373,12 +378,36 @@ If you have a problem with login and logs in contaners say about "No user yet cr
          docker-compose exec {container_name} bash
       example:
          docker-compose exec webserver bash
+                                           
+### Attach to a container when it does not start
+If a container does not start because of teh startup errors,
+use the following command:
+
+    docker-compose run --entrypoint bash webserver
 
 ### To stop all your containers:
       docker-compose down
 
 ### To delete all images and containers:
       docker system prune -a
+                                      
+### Upgrade Airflow Database
+If you have a problem with login and logs in containers complaining that
+"relation does not exist" execute this:
+
+```
+docker exec -it scheduler entrypoint.sh airflow db upgrade
+docker exec -it webserver entrypoint.sh airflow db upgrade
+```     
+
+### Create Airflow user
+
+If you have a problem with login and logs in containers 
+complaining that "No user yet created" execute this:
+
+```
+docker exec -it scheduler entrypoint.sh airflow users create --username $_AIRFLOW_WWW_USER_USERNAME --password $_AIRFLOW_WWW_USER_PASSWORD -r Admin -e 1@example.com -f Airflow -l Airflow
+```
 
 
 ## Overriding default parameters
@@ -488,3 +517,50 @@ Look for the words a message:
     3.140592653839794
     ...
     INFO Final process status is success
+                   
+### Testing Airflow User Interface
+                                           
+#### Preparation
+
+1. Point your browser to http://localhost:8080
+                                          
+2. Log in with the username and passowrd you have defined by 
+
+        _AIRFLOW_WWW_USER_USERNAME
+        _AIRFLOW_WWW_USER_PASSWORD
+                             
+    environment variables (default `airflow/airflow`).
+
+3. Go to the DAGs Tab and **enable** all dags (at least `1st-tool` and `pi`)
+                                        
+#### UI Test 1: basic CWL (Hello World)
+
+4. Click Play button to the right of the DAG name `1st-tool`
+
+5. Enter the following code into  box:
+
+        {
+          "job": {
+             "message": "Hello World"
+          }
+        }
+6. Click `Trigger` button
+7. Examine the Graph and the Log for the "Hello World" result.
+
+#### UI Test 2: CWL, using python project 
+
+8. Click Play button to the right of the DAG name `pi`
+
+9. Enter the following code into  box:
+
+        {
+           "job": {
+              "iterations": "1000"
+           }
+         }
+    Note, that the number of iterations must be a quoted string.
+
+10. Click `Trigger` button
+11. Examine the Graph and the Log.
+
+
