@@ -31,7 +31,7 @@ COPY project /dependencies
 COPY r-* /dependencies/
 
 SHELL [ "/bin/bash", "--login" ,"-c" ]
-RUN apt-get update && apt-get install -y curl unzip zip wget ca-certificates python3-pip \
+RUN apt-get update && apt-get install -y curl unzip zip wget ca-certificates python3-pip net-tools postgresql-client \
  && update-ca-certificates --fresh && chmod a+rx /usr/bin/install_cwl_airflow.sh \
  && chmod -R a+rx /cwl-airflow && \
  curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-20.10.7.tgz \
