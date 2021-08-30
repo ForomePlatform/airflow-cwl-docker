@@ -110,6 +110,8 @@ services:
     <<: *airflow_env
     <<: *airflow_volumes
     <<: *common_parameters
+    profiles:
+      - postgres
     command: [ "migration" ]
     depends_on:
       postgres:
