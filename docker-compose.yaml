@@ -73,8 +73,8 @@ services:
     user: root
     container_name: scheduler
     depends_on:
-      migrationservice:
-        condition: service_completed_successfully
+      webserver:
+        condition: service_healthy
     <<: *airflow_env
     <<: *airflow_volumes
     <<: *common_parameters
@@ -92,30 +92,30 @@ services:
     ports:
       - "${WEB_SERVER_PORT:-8080}:8080"
     command: [ "airflow", "webserver" ]
-    depends_on:
-      migrationservice:
-        condition: service_completed_successfully
+    #depends_on:
+    #  migrationservice:
+    #    condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
       interval: 30s
       timeout: 4s
       retries: 5
 
-  migrationservice:
-    image: "${AIRFLOW_IMAGE_NAME:-myairflow-conda}"
-    <<: *airflow_build_params
-    container_name: migrationservice
-    restart: on-failure
-    user: root
-    <<: *airflow_env
-    <<: *airflow_volumes
-    <<: *common_parameters
-    profiles:
-      - postgres
-    command: [ "migration" ]
-    depends_on:
-      postgres:
-        condition: service_healthy
+  #migrationservice:
+  #  image: "${AIRFLOW_IMAGE_NAME:-myairflow-conda}"
+  #  <<: *airflow_build_params
+  #  container_name: migrationservice
+  #  restart: on-failure
+  #  user: root
+  #  <<: *airflow_env
+  #  <<: *airflow_volumes
+  #  <<: *common_parameters
+  #  profiles:
+  #    - postgres
+  #  command: [ "migration" ]
+  #  depends_on:
+  #    postgres:
+  #      condition: service_healthy
 
   postgres:
     image: postgres:13
@@ -126,16 +126,17 @@ services:
       POSTGRES_USER: ${POSTGRE_USER:-airflow}
       POSTGRES_PASSWORD: ${POSTGRE_PASS:-airflow}
       POSTGRES_DB: ${POSTGRE_DB:-airflow}
+      POSTGRES_HOST_AUTH_METHOD: trust
     <<: *common_parameters
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     profiles:
       - postgres
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 10s
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRE_USER} -d ${POSTGRE_DB}"]
+      interval: 3s
       timeout: 5s
-      retries: 5
+      retries: 50
 volumes:
   postgres-db-volume:
 networks:

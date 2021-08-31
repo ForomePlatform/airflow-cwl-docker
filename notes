@@ -1,0 +1,12 @@
+If you change POSTGRE_DB/POSTGRE_USER/POSTGRE_PASS
+
+you needt to delete postgres volume to recreate db:
+
+```
+# stop all
+docker-compose --env-file ./.env down
+# find volume name
+docker volume ls | grep postgre
+# delete
+docker volume rm airflow-cwl-docker_postgres-db-volume
+```

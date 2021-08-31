@@ -76,8 +76,9 @@ The simplest configuration without Conda:
     cp .env_example_postgres_noconda .env
     source .env
     DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
-    docker-compose --env-file ./.env up -d
     sudo cp -rf ./project/examples/* ./dags
+    docker-compose --env-file ./.env up -d
+    
                                                   
 The whole process should take about 15 minutes on a stable Internet
 connection.
