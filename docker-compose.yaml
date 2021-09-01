@@ -49,7 +49,7 @@ x-aliases:
         AIRFLOW__LOGGING__BASE_LOG_FOLDER: "/opt/airflow/logs"
         PROJECT_DIR: "/opt/airflow/project"
         CONDA_CHECK: "${CONDA_CHECK:-true}"
-        CONDA_ENV: "${CONDA_ENV}"
+        CONDA_ENV: "${CONDA_ENV:-conda_default}"
         
 
   - &airflow_volumes

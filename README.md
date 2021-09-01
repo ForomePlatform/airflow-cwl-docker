@@ -74,7 +74,6 @@ The simplest configuration without Conda:
     cd airflow-cwl-docker
     git submodule update --init --recursive
     cp .env_example_postgres_noconda .env
-    source .env
     DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
     sudo cp -rf ./project/examples/* ./dags
     docker-compose --env-file ./.env up -d
@@ -84,7 +83,7 @@ The whole process should take about 15 minutes on a stable Internet
 connection.
                  
 You can test the installation as described in 
-[Testing Installation](#Testing the installation) section. The first two 
+[Testing the installation](#testing-the-installation) section. The first two 
 examples should run in both command-line mode and in Airflow UI. 
 The third example requires Conda.
 
@@ -104,13 +103,12 @@ Full sequence of commands to copy and paste:
     cd airflow-cwl-docker
     git submodule update --init --recursive
     cp .env_example_postgres_conda .env
-    source .env
     DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
-    docker-compose --env-file ./.env up -d
     sudo cp -rf ./project/examples/* ./dags
+    docker-compose --env-file ./.env up -d
 
 You can test the installation as described in 
-[Testing Installation](#Testing the installation) section. All three 
+[Testing the installation](#testing-the-installation) section. All three 
 examples should run in both command-line mode and in Airflow UI.
 
 ## Possible Configurations
