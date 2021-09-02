@@ -75,7 +75,7 @@ The simplest configuration without Conda:
     git submodule update --init --recursive
     cp .env_example_postgres_noconda .env
     DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
-    sudo cp -rf ./project/examples/* ./dags
+    sudo mkdir -p ./dags && cp -rf ./project/examples/* ./dags
     docker-compose --env-file ./.env up -d
     
                                                   
@@ -104,7 +104,7 @@ Full sequence of commands to copy and paste:
     git submodule update --init --recursive
     cp .env_example_postgres_conda .env
     DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
-    sudo cp -rf ./project/examples/* ./dags
+    sudo mkdir -p ./dags && cp -rf ./project/examples/* ./dags
     docker-compose --env-file ./.env up -d
 
 You can test the installation as described in 

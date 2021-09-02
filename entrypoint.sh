@@ -23,6 +23,7 @@ then
     export PATH=${HOME}/anaconda/condabin/:$PATH:${HOME}/anaconda/envs/${CONDA_ENV}/bin:${HOME}/anaconda/bin
         conda init bash
         source /root/.bashrc
+        if ! grep -qF 'source activate ${CONDA_ENV}' ~/.bashrc; then echo 'source activate ${CONDA_ENV} && conda info -e' >> ~/.bashrc && echo added; fi
         conda run --no-capture-output -n ${CONDA_ENV} airflow db init
         conda run --no-capture-output -n ${CONDA_ENV} airflow db upgrade
         conda run --no-capture-output -n ${CONDA_ENV} airflow users create --username $_AIRFLOW_WWW_USER_USERNAME --password $_AIRFLOW_WWW_USER_PASSWORD -r Admin -e $_AIRFLOW_WWW_USER_USERNAME@example.com -f Airflow -l Airflow
