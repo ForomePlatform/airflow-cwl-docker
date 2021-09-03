@@ -75,12 +75,13 @@ The simplest configuration without Conda:
     git submodule update --init --recursive
     cp .env_example_postgres_noconda .env
     DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
-    sudo mkdir -p ./dags && cp -rf ./project/examples/* ./dags
+    mkdir -p ./dags && cp -rf ./project/examples/* ./dags
     docker-compose --env-file ./.env up -d
     
                                                   
-The whole process should take about 15 minutes on a stable Internet
-connection.
+The whole process, when using a stable Internet
+connection should take from 5 to 20 minutes depending on your 
+Internet speed.
                  
 You can test the installation as described in 
 [Testing the installation](#testing-the-installation) section. The first two 
@@ -104,7 +105,7 @@ Full sequence of commands to copy and paste:
     git submodule update --init --recursive
     cp .env_example_postgres_conda .env
     DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
-    sudo mkdir -p ./dags && cp -rf ./project/examples/* ./dags
+    mkdir -p ./dags && cp -rf ./project/examples/* ./dags
     docker-compose --env-file ./.env up -d
 
 You can test the installation as described in 
