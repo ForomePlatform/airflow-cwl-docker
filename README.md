@@ -14,13 +14,17 @@
     - [Selecting configuration mode](#selecting-configuration-mode)
     - [Environment variables that commonly require changing](#environment-variables-that-commonly-require-changing)
 * [Building Containers](#building-containers)
+  + [Docker build command](#docker-build-command)
+  + [Rebuilding the Containers](#rebuilding-the-containers)
+  + [Copying DAGs to Airflow folder](#copying-dags-to-airflow-folder)
 * [Starting up the containers](#starting-up-the-containers)
-  + [Post-build configuration](#post-build-configuration)
+  + [Checking environment variables](#checking-environment-variables)
     - [Overriding BASE_URL](#overriding-base_url)
     - [Database authentication](#database-authentication)
   + [Starting Up](#starting-up)
     - [Daemon mode](#daemon-mode)
     - [Console mode](#console-mode)
+    - [Test containers](#test-containers)
     - [After starting containers](#after-starting-containers)
 * [Some useful commands:](#some-useful-commands)
   + [To view logs of the running containers:](#to-view-logs-of-the-running-containers)
@@ -45,7 +49,6 @@
     - [UI Test 1: basic CWL (Hello World)](#ui-test-1-basic-cwl-hello-world)
     - [UI Test 2: CWL, using python project](#ui-test-2-cwl-using-python-project)
     - [UI Test 3: CWL, using R script](#ui-test-3-cwl-using-r-script)
-
 
 ## Prerequisites 
 
@@ -292,6 +295,18 @@ where it is set to `172.16.238.1`). Alternatively, it is normally, `172.17.0.1`
 
     export POSTGRE_SERVER=172.16.238.1  
     ## or export POSTGRE_SERVER=172.18.0.1
+
+> On [Mac systems](https://docs.docker.com/desktop/mac/networking/#there-is-no-docker0-bridge-on-macos),
+> because of the way networking is implemented 
+> in Docker Desktop for Mac, you cannot see a docker0 interface 
+> on the host. This interface is actually within the virtual machine.
+> Therefore, one has to use a 
+> [workaround](https://docs.docker.com/desktop/mac/networking/#use-cases-and-workarounds).
+> and set PostgreSQL server address to `host.docker.internal`
+> 
+>    `export POSTGRE_SERVER=host.docker.internal` 
+
+
 
 Most probably, for security reasons, you would want to change 
 username and password for the Airflow and for the 
