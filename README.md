@@ -39,6 +39,7 @@
     - [Entering container command line environment](#entering-container-command-line-environment)
     - [Test 1: basic CWL (Hello World)](#test-1-basic-cwl-hello-world)
     - [Test 2: CWL, using python project](#test-2-cwl-using-python-project)
+    - [Test 3: CWL, using R script](#test-2-cwl-using-r-script)
   + [Testing Airflow User Interface](#testing-airflow-user-interface)
     - [Preparation](#preparation)
     - [UI Test 1: basic CWL (Hello World)](#ui-test-1-basic-cwl-hello-world)
@@ -573,10 +574,26 @@ Look for the words a message:
            "job": {
               "iterations": "1000"
            }
-         }
+        }
     Note, that the number of iterations must be a quoted string.
 
 10. Click `Trigger` button
 11. Examine the Graph and the Log.
 
+#### UI Test 3: CWL, using R script 
+
+8. Click Play button to the right of the DAG name `rpi`
+
+9. Enter the following code into  box:
+
+        {
+           "job": {
+               "script": "/dependencies/r_sample_project/rpi.R",
+               "iterations": "1000"
+           }
+        }
+     Note, that the number of iterations must be a quoted string.
+
+10. Click `Trigger` button
+11. Examine the Graph and the Log.
 
