@@ -39,11 +39,12 @@
     - [Entering container command line environment](#entering-container-command-line-environment)
     - [Test 1: basic CWL (Hello World)](#test-1-basic-cwl-hello-world)
     - [Test 2: CWL, using python project](#test-2-cwl-using-python-project)
-    - [Test 3: CWL, using R script](#test-2-cwl-using-r-script)
+    - [Test 3: CWL, using R script](#test-3-cwl-using-r-script)
   + [Testing Airflow User Interface](#testing-airflow-user-interface)
     - [Preparation](#preparation)
     - [UI Test 1: basic CWL (Hello World)](#ui-test-1-basic-cwl-hello-world)
     - [UI Test 2: CWL, using python project](#ui-test-2-cwl-using-python-project)
+    - [UI Test 3: CWL, using R script](#ui-test-3-cwl-using-r-script)
 
 
 ## Prerequisites 
