@@ -188,11 +188,9 @@ application.
 Execute the following commands, replacing appropriate values, or execute 
 corresponding commands within PostgreSQL console, or SQL console.
 
-`sudo -u postgres createuser --superuser --createrole --createdb --login --inherit airflow`
-
-`sudo -u postgres createdb --owner=airflow airflow`
-
-`sudo -u postgres psql -c "alter user airflow with password 'airflow';"`
+    sudo -u postgres createuser --superuser --createrole --createdb --login --inherit airflow
+    sudo -u postgres createdb --owner=airflow airflow
+    sudo -u postgres psql -c "alter user airflow with password 'airflow';"
 
 ####  Configure PostgreSQL to authenticate Airflow user
 
@@ -200,8 +198,12 @@ If your PostgreSQL configured to authenticate user(s)
 from built-in bridge Docker network, you are all set, nothing needs
 to be done.
 
-Only if you need to adjust authentication settings, follow these steps
-or execute a similar procedure:
+Only if you need to adjust authentication settings, follow steps 1-4 below
+or execute a similar procedure. You might need to edit two configuration 
+files: `pg_hba.conf` and `postgresql.conf`. If you do not know where they 
+are located, execute the following command:
+
+    sudo -u postgres psql -c "show data_directory;"    
 
 1. Ensure, that network, created by docker for Airflow containers
 can be authenticated by PostgreSQL.
@@ -217,9 +219,15 @@ If you need to change these network parameters, edit `networks` section in
 
         host    all             all             172.16.238.0/24         password
 
-3. Configure listening address in `postgresql.conf` and restart PostgreSQL
+3. Configure listening address in `postgresql.conf` 
 
         listen_address = '*'
+
+4. Restart PostgreSQL service. This is an OS dependent command, but on 
+many Linux systems it will be (for the latest PostgreSQL at the time of
+writing - [PostgreSQL 13](https://www.postgresql.org/docs/13/index.html)): 
+
+       sudo systemctl restart postgresql-13 
 
 If you have an existing ***user-defined*** network with custom parameters 
 (***NOT a built-in network***), you will probably need to override these
