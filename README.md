@@ -589,7 +589,10 @@ Look for the words a message:
 
         {
            "job": {
-               "script": "/dependencies/r_sample_project/rpi.R",
+               "script": {
+                  "class": "File",
+                  "location": "/dependencies/r_sample_project/rpi.R"
+               },
                "iterations": "1000"
            }
         }
