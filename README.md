@@ -517,7 +517,23 @@ Look for the words a message:
     3.140592653839794
     ...
     INFO Final process status is success
-                   
+
+#### Test 3: CWL, using R script 
+              
+In the container execute:
+
+    cwl-runner /dependencies/examples/rpi.cwl --script /dependencies/r_sample_project/rpi.R --iterations 1000
+
+Look for the words a message:
+
+    INFO [job calculate] /tmp/s7tumyy5$ Rscript \
+      /tmp/tmpmkit67pd/stg19d1507c-992d-4722-82a7-fb24a87ff427/rpi.R \
+      1000
+    1000  ->  3.059059 
+    ...
+    INFO Final process status is success
+
+
 ### Testing Airflow User Interface
                                            
 #### Preparation
