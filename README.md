@@ -168,7 +168,7 @@ environment. These projects can be installed using Git submodules functionality.
 
 2. Execute command:
 
-`git submodule update --init --recursive`
+        git submodule update --init --recursive
 
 ### Configuring PostgreSQL
 
@@ -217,7 +217,7 @@ If you need to change these network parameters, edit `networks` section in
 
 2. Configure authentication in `pg_hba.conf`
 
-        host    all             all             172.16.238.0/24         password
+       host    all             all             172.16.238.0/24         password
 
 3. Configure listening address in `postgresql.conf` 
 
@@ -308,57 +308,81 @@ More advanced options are listed in the
 
 ## Building Containers
 
-Export CONDA_CHECK variable either by sourcing your `.env` file
-or by giving one of the export commands below:
+### Docker build command                                 
 
-```
-EXPORT CONDA_CHECK="false"
-EXPORT CONDA_CHECK="true"
-```
-
-Then, run the build command:
+Use the following command for docker build:
 
 ```
 DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
 ```
-Variable DOCKER_BUILDKIT=1 set Docker configuration to use 
-buildkit (only during build)
 
-Variable BUILDKIT_PROGRESS=plain set Docker configuration 
+Variable DOCKER_BUILDKIT=1 instructs Docker to use 
+[BuildKit](https://docs.docker.com/develop/develop-images/build_enhancements/) 
+(only during build)
+
+Variable BUILDKIT_PROGRESS=plain instructs Docker  
 to use plain text progress output (only during build)
 
-
+### Rebuilding the Containers
 > _**NB:**_
 > If you have changed the configuration mode, 
 > you must completely rebuild containers, clearing the cache. Use 
 > the following command:
 
-      docker-compose down && docker-compose build --no-cache
+    docker-compose down && docker-compose build --no-cache
+
+### Copying DAGs to Airflow folder
+
+After the build, copy the DAGs you will be using into dags fle.
+Examples can be copied by the following command:
+
+    mkdir -p ./dags && cp -rf ./project/examples/* ./dags
+                                                           
+If you have changed `DAGS_DIR` environment variable 
+(e.g. in .env file), then the command will be:
+
+    mkdir -p ./dags && cp -rf ./project/examples/* ${DAGS_DIR}/
+
 
 ## Starting up the containers
 
-### Post-build configuration 
+### Checking environment variables 
 
 Some environment variables can be changed even after the 
 containers are built. Examples are:
 
 #### Overriding BASE_URL                       
 
-`export BASE_URL=http://your_domain:8080`
+    export BASE_URL=http://your_domain:8080
       
 #### Database authentication
 
-> **Example**
-```
-export BASE_URL=http://yourdomain.com
-export POSTGRE_USER=airflow
-export POSTGRE_PASS=airflow
-```
+The following environment variables are responsible for
+Airflow authentication for PostgreSQL:
+
+    export POSTGRE_DB=airflow
+    export POSTGRE_USER=airflow
+    export POSTGRE_PASS=airflow
+
+> _**NB:**_
+> If you have changed PostgreSQL configuration or authentication 
+> (`POSTGRE_DB`/`POSTGRE_USER`/`POSTGRE_PASS`),  
+> and you are using PostgreSQL in a container (not on the host),
+> it is necessary
+> to delete postgres volume to recreate the Airflow database
+ 
+    # stop all
+    docker-compose --env-file ./.env down
+    # find volume name
+    docker volume ls | grep postgre
+    # delete
+    docker volume rm airflow-cwl-docker_postgres-db-volume
+                               
 
 ### Starting Up
 
 Export any of the environment variables that are not included 
-in `.env` file. 
+in the `.env` file. 
 
 Restart the containers
 
@@ -371,7 +395,13 @@ Restart the containers
 #### Console mode
 
 `docker-compose --env-file ./.env up`
+                                 
+#### Test containers
 
+Testing is described in 
+[Testing the installation](#testing-the-installation) section. The first two 
+examples should run in both command-line mode and in Airflow UI. 
+The third example requires Conda.
 
 #### After starting containers
 
@@ -442,7 +472,7 @@ to override their default values
 # POSTGRE_SERVER=postgres
 # WEB_SERVER_PORT=8080
 # AIRFLOW__CORE__LOAD_EXAMPLES="False"
-## DAGS_FOLDER -- Environment varibale inside container. Do not override if you set DAGS_DIR variable
+## DAGS_FOLDER -- Environment variable inside container. Do not override if you set DAGS_DIR variable
 # DAGS_FOLDER="/opt/airflow/dags"
 # _AIRFLOW_WWW_USER_USERNAME="airflow"
 # _AIRFLOW_WWW_USER_PASSWORD="airflow"
@@ -450,7 +480,7 @@ to override their default values
 #
 ### Mapped volumes
 # PROJECT_DIR="./project"
-## DAGS_DIR -- Environment varibale on host! Do not override if you set DAGS_FOLDER variable
+## DAGS_DIR -- Environment variable on host! Do not override if you set DAGS_FOLDER variable
 # DAGS_DIR="./dags"
 # LOGS_DIR="./airflow-logs"
 # CWL_TMP_FOLDER="./cwl_tmp_folder"
