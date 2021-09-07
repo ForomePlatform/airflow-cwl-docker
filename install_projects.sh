@@ -24,8 +24,10 @@ cd /dependencies || exit
 # listing all folders with setup.py file
 PROJECT_LIST="projects.lst"
 if [ ! -f ${PROJECT_LIST} ] ; then
+  echo "${PROJECT_LIST} Not found, creating"
   touch ${PROJECT_LIST}
   for dir in */setup.py ; do echo ${dir%/*} >> ${PROJECT_LIST} ; done
+  cat ${PROJECT_LIST}
 fi
 # Install all projects
 while read -r project; do
