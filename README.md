@@ -69,8 +69,7 @@ carefully.
 ## Quick Start
 
 If you have a clean VM, where you want to install CWL-Airflow 
-without any 
-customizations, just issue the following commands:
+without any customizations, just issue the following commands:
 
 ### Without Conda
 The simplest configuration without Conda:
@@ -103,13 +102,6 @@ use
                                          
 Please note, that Conda installation might take about an hour.
 
-Put your env file (yaml) to folder `project` or use exsiting default (`conda_default.yml`) and then edit your `.env` file (example vim):
-    
-    vim .env
-And then set variable AIRFLOW_CONDA_ENV (for example conda_default):
-
-    AIRFLOW_CONDA_ENV="conda_default"
-
 Full sequence of commands to copy and paste:
 
     git clone https://github.com/ForomePlatform/airflow-cwl-docker.git
@@ -124,7 +116,9 @@ You can test the installation as described in
 [Testing the installation](#testing-the-installation) section. All three 
 examples should run in both command-line mode and in Airflow UI.
 
-## Possible Configurations
+##  Custom project configurations
+
+###  Possible Configurations
 
 Airflow requires a relational database management system (RDBMS) to 
 store and manage states of the running pipelines. This configuration
@@ -156,6 +150,42 @@ This brings us to four possible configurations:
           
 Selection of one of these four possible configuration is controlled through 
 environment variables.
+
+### Controlling Conda environments
+
+Put your env file (yaml) to folder `project` or use 
+existing default (`conda_default.yml`) and then edit your `.env` file (example vim):
+    
+    vim .env
+And then set variable AIRFLOW_CONDA_ENV (for example conda_default):
+
+    AIRFLOW_CONDA_ENV="conda_default"
+                                           
+### Setting up user projects
+
+#### Python Projects
+               
+Python projects can be installed inside CWL-Airflow and hence can 
+be used by workflows. The automatic configuration assumes that all
+Python projects must be placed in project folder under the source tree.
+It can be done either by using [Git submodules](#configure-git-submodules)
+utility, or, simply by copying the project content under projects folder.
+Each Python project must contain `setup.py` file.
+An included example, `project/python_sample_project` shows how it can be done.
+
+If the projects depend on each other, then it is important to 
+install the projects in the specific order. To enforce the order,
+create a file called `projects.lst` and place it in `project` folder.
+List a single subfolder of a python project on each line of this file.
+If there is no file `projects.lst`, then teh projects will be installed
+in an arbitrary order. See [install_projects.sh](install_projects.sh) 
+for details.
+
+
+#### R Projects
+
+R scripts can be placed under project folder in the source tree. 
+See included example, `project/r_sample_project`. 
 
 ## Before building the containers
 
