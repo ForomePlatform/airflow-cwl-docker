@@ -20,16 +20,23 @@
 
 echo "Installing local projects"
 cd /dependencies || exit
-# Install projects with setup.py
-for dir in */
-do
-  echo "Installing " "$dir"
-  pushd "$dir" || exit
-  if [ -f setup.py ] ; then
-    echo "Building wheel"
-    pip3 install . || cd dist && pip3 install *.whl
+# if projects list is not specified, create it by
+# listing all folders with setup.py file
+PROJECT_LIST="projects.lst"
+if [ ! -f ${PROJECT_LIST} ] ; then
+  touch ${PROJECT_LIST}
+  for dir in */setup.py ; do echo ${dir%/*} >> ${PROJECT_LIST} ; done
+fi
+# Install all projects
+while read -r project; do
+  echo "Installing " "$project"
+  pushd "$project" || exit
+  if [ ! -f setup.py ] ; then
+    echo "Not a valid project (no setup.py): " "$project"
   fi
+  echo "Building wheel"
+  pip3 install . || cd dist && pip3 install *.whl
   popd || exit
-done
+done < ${PROJECT_LIST}
 cd ~ || exit
 echo 'Installed: local projects'
