@@ -56,10 +56,10 @@
 > requires **docker-compose utility version 1.29+**
  
 Installation of CWL-Airflow on a dedicated host should be trivial and 
-by and large should be covered by the [Quick Start](#Quick Start) section 
+by and large should be covered by the [Quick Start](#quick-start) section 
 with possible customizations described in 
-[Common Environment variables](#Environment variables that commonly require changing)
-and [more advanced](#Full list of available environment variables ) 
+[Common Environment variables](#environment-variables-that-commonly-require-changing)
+and [more advanced](#full-list-of-available-environment-variables) 
 options sections.
 
 However, if the host where you are installing CWL-Airflow is shared with other 
@@ -79,7 +79,7 @@ The simplest configuration without Conda:
     cd airflow-cwl-docker
     git submodule update --init --recursive
     cp .env_example_postgres_noconda .env
-    DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
+    DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose --env-file ./.env build
     mkdir -p ./dags && cp -rf ./project/examples/* ./dags
     docker-compose --env-file ./.env up -d
     
@@ -102,6 +102,13 @@ use
     cp .env_example_postgres_conda .env
                                          
 Please note, that Conda installation might take about an hour.
+
+Put your env file (yaml) to folder `project` or use exsiting default (`conda_default.yml`) and then edit your `.env` file (example vim):
+    
+    vim .env
+And then set variable AIRFLOW_CONDA_ENV (for example conda_default):
+
+    AIRFLOW_CONDA_ENV="conda_default"
 
 Full sequence of commands to copy and paste:
 
@@ -179,7 +186,7 @@ environment. These projects can be installed using Git submodules functionality.
 you would like to reuse a PostgreSQL RDBMS already 
 installed on your system for Airflow_**. If you are using default 
 configuration, when a new container with PostgreSQL is installed, then skip
-to the [Environment Variables](#Setup Environment Variables) section.
+to the [Environment Variables](#setup-environment-variables) section.
 
 The following subsections explain how 
 to configure existing PostgreSQL service to be used by Airflow.
@@ -272,7 +279,7 @@ of each file:
 
       ###
       COMPOSE_PROFILES=[/postgres]
-      CONDA_CHECK=[true/false]
+      AIRFLOW_CONDA_ENV=[/envfilenamewithoutext]
       ###
    
 
@@ -507,7 +514,7 @@ to override their default values
 > NB: Values might be different for your environment
 ```
 COMPOSE_PROFILES=
-CONDA_CHECK="true"
+AIRFLOW_CONDA_ENV="envfilenamewithoutext"
 POSTGRE_SERVER="172.16.238.1"
 POSTGRE_DB=airflow
 POSTGRE_USER=airflow

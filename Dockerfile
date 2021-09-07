@@ -19,8 +19,8 @@
 
 FROM ubuntu:20.04
 USER root
-ARG CONDA_CHECK=true
-ENV CONDA_CHECK=${CONDA_CHECK}
+ARG AIRFLOW_CONDA_ENV=true
+ENV AIRFLOW_CONDA_ENV=${AIRFLOW_CONDA_ENV}
 
 COPY install_*.sh /usr/bin/
 
@@ -39,7 +39,7 @@ RUN apt-get update && apt-get install -y curl unzip zip wget ca-certificates pyt
  && chmod a+rx /usr/bin/install_cwl_airflow.sh  /usr/bin/install_conda.sh  /usr/bin/install_projects.sh \
  && ln -s /usr/bin/python3 /usr/bin/python
 
-RUN if [ "$CONDA_CHECK" == "true" ] ; then install_conda.sh ; \
+RUN if [ ! -z "$AIRFLOW_CONDA_ENV" ] ; then install_conda.sh ; \
         else python3 -m pip install --upgrade pip && install_cwl_airflow.sh && install_projects.sh ; \
     fi
 

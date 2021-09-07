@@ -27,30 +27,33 @@ export PATH=${HOME}/anaconda/condabin:$PATH
 pip3 uninstall -y typing
 cd /dependencies/ || exit
 echo 'installing default conda environments'
-for cenv_file in $(ls . | grep "yml\|yaml")
-do
-  cenv=${cenv_file%.*}
-  echo $cenv
-  #conda create -y --name $cenv  python=3.8
-  conda env create -f ${cenv_file}
-  source /root/anaconda/etc/profile.d/conda.sh
-  echo 'from /root/anaconda/etc/profile.d/conda.sh'
-  conda activate ${cenv}
-  echo "Installing conda packages"
-  conda install -y --name ${cenv} -c conda-forge r-remotes r-optparse numpy scipy dataclasses r rpy2
-  if command -v R &> /dev/null
-  then
-    while read -r package; do
-      echo "Installing R package from GitHub: $package"
-      export R_SCRIPT_INSTALL1="remotes::install_github(\"$package\", repos='http://cran.us.r-project.org')"
-      echo "command to install: ${R_SCRIPT_INSTALL1}"
-      R -e "${R_SCRIPT_INSTALL1}"
-    done < r-github-packages.txt
-  fi
-  install_cwl_airflow.sh
-  install_projects.sh
-  echo '#!/bin/bash' > /usr/bin/RScript
-  echo 'exec conda run --no-capture-output -n $CONDA_ENV Rscript "$@"' >> /usr/bin/Rscript
-  chmod a+x /usr/bin/Rscript
-  #exit
-done
+export cenv=${AIRFLOW_CONDA_ENV}
+echo $cenv
+#conda create -y --name $cenv  python=3.8
+if [ -f "${cevn}.yaml" ] ;
+then 
+  export cenv_file="${cevn}.yaml"
+elif [ -f "${cevn}.yml" ]
+  export cenv_file="${cevn}.yml"
+fi
+conda env create -f ${cenv_file}
+source /root/anaconda/etc/profile.d/conda.sh
+echo 'from /root/anaconda/etc/profile.d/conda.sh'
+conda activate ${cenv}
+echo "Installing conda packages"
+conda install -y --name ${cenv} -c conda-forge r-remotes r-optparse numpy scipy dataclasses r rpy2
+if command -v R &> /dev/null
+then
+  while read -r package; do
+    echo "Installing R package from GitHub: $package"
+    export R_SCRIPT_INSTALL1="remotes::install_github(\"$package\", repos='http://cran.us.r-project.org')"
+    echo "command to install: ${R_SCRIPT_INSTALL1}"
+    R -e "${R_SCRIPT_INSTALL1}"
+  done < r-github-packages.txt
+fi
+install_cwl_airflow.sh
+install_projects.sh
+echo '#!/bin/bash' > /usr/bin/Rscript
+echo 'exec conda run --no-capture-output -n $CONDA_ENV Rscript "$@"' >> /usr/bin/Rscript
+chmod a+x /usr/bin/Rscript
+#exit
