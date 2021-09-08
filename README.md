@@ -309,7 +309,7 @@ of each file:
 
       ###
       COMPOSE_PROFILES=[/postgres]
-      AIRFLOW_CONDA_ENV=[/envfilenamewithoutext]
+      AIRFLOW_CONDA_ENV=[/conda_default]
       ###
    
 
@@ -544,7 +544,7 @@ to override their default values
 > NB: Values might be different for your environment
 ```
 COMPOSE_PROFILES=
-AIRFLOW_CONDA_ENV="envfilenamewithoutext"
+AIRFLOW_CONDA_ENV="conda_default"
 POSTGRE_SERVER="172.16.238.1"
 POSTGRE_DB=airflow
 POSTGRE_USER=airflow

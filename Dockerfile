@@ -19,7 +19,7 @@
 
 FROM ubuntu:20.04
 USER root
-ARG AIRFLOW_CONDA_ENV=true
+ARG AIRFLOW_CONDA_ENV="conda_default"
 ENV AIRFLOW_CONDA_ENV=${AIRFLOW_CONDA_ENV}
 
 COPY install_*.sh /usr/bin/
