@@ -108,7 +108,7 @@ Full sequence of commands to copy and paste:
     cd airflow-cwl-docker
     git submodule update --init --recursive
     cp .env_example_postgres_conda .env
-    DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose build
+    DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose --env-file ./.env build
     mkdir -p ./dags && cp -rf ./project/examples/* ./dags
     docker-compose --env-file ./.env up -d
 

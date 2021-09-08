@@ -26,12 +26,13 @@ chmod a+x ./anaconda.sh
 export PATH=${HOME}/anaconda/condabin:$PATH
 pip3 uninstall -y typing
 cd /dependencies/ || exit
-echo 'installing default conda environments'
+echo 'Installing conda environments'
+conda init
 conda deactivate
 for cenv_file in $(ls . | grep "yml\|yaml")
 do
   cenv=${cenv_file%.*}
-  echo $cenv
+  echo "Creating $cenv Conda environment"
   #conda create -y --name $cenv  python=3.8
   conda env create -f ${cenv_file}
   source /root/anaconda/etc/profile.d/conda.sh
