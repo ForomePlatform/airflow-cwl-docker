@@ -36,8 +36,8 @@ while read -r project; do
   if [ ! -f setup.py ] ; then
     echo "Not a valid project (no setup.py): " "$project"
   fi
-  echo "Building wheel"
-  pip3 install . || cd dist && pip3 install *.whl
+  echo "Calling pip3 install ."
+  pip3 install . # || cd dist && pip3 install *.whl
   popd || exit
 done < ${PROJECT_LIST}
 cd ~ || exit

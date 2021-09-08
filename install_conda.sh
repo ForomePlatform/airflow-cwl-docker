@@ -49,7 +49,9 @@ do
       R -e "${R_SCRIPT_INSTALL1}"
     done < r-github-packages.txt
   fi
+  echo "In $cenv Conda environment: "
   install_cwl_airflow.sh
+  echo "In $cenv Conda environment: "
   install_projects.sh
   echo '#!/bin/bash' > /usr/bin/RScript
   echo 'exec conda run --no-capture-output -n $CONDA_ENV Rscript "$@"' >> /usr/bin/Rscript
