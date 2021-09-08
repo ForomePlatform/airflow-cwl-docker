@@ -27,7 +27,7 @@ x-aliases:
         context: .
         dockerfile: Dockerfile
         args:
-          CONDA_CHECK: "${CONDA_CHECK:-true}"
+          AIRFLOW_CONDA_ENV: "${CONDA_ENV:-conda_default}"
 
   - &airflow_env
       environment:
@@ -48,8 +48,7 @@ x-aliases:
         AIRFLOW__WEBSERVER__BASE_URL: ${BASE_URL:-http://localhost:8080}
         AIRFLOW__LOGGING__BASE_LOG_FOLDER: "/opt/airflow/logs"
         PROJECT_DIR: "/opt/airflow/project"
-        CONDA_CHECK: "${CONDA_CHECK:-true}"
-        CONDA_ENV: "${CONDA_ENV:-conda_default}"
+        AIRFLOW_CONDA_ENV: "${CONDA_ENV:-conda_default}"
         
 
   - &airflow_volumes
