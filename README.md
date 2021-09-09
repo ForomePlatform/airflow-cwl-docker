@@ -4,7 +4,12 @@
 * [Quick Start](#quick-start)
   + [Without Conda](#without-conda)
   + [With Conda](#with-conda)
-* [Possible Configurations](#possible-configurations)
+* [Custom project configurations](#custom-project-configurations)
+  + [Possible Configurations](#possible-configurations)
+  + [Controlling Conda environments](#controlling-conda-environments)
+  + [Setting up user projects](#setting-up-user-projects)
+    - [Python Projects](#python-projects)
+    - [R Projects](#r-projects)
 * [Before building the containers](#before-building-the-containers)
   + [Configure Git submodules](#configure-git-submodules)
   + [Configuring PostgreSQL](#configuring-postgresql)
@@ -13,6 +18,10 @@
   + [Setup Environment Variables](#setup-environment-variables)
     - [Selecting configuration mode](#selecting-configuration-mode)
     - [Environment variables that commonly require changing](#environment-variables-that-commonly-require-changing)
+  + [Managing Conda environments](#managing-conda-environments)
+  + [Controlling installation of R packages](#controlling-installation-of-r-packages)
+    - [Using Conda environment](#using-conda-environment)
+    - [Installing from GitHub](#installing-from-github)
 * [Building Containers](#building-containers)
   + [Docker build command](#docker-build-command)
   + [Rebuilding the Containers](#rebuilding-the-containers)
@@ -49,7 +58,6 @@
     - [UI Test 1: basic CWL (Hello World)](#ui-test-1-basic-cwl-hello-world)
     - [UI Test 2: CWL, using python project](#ui-test-2-cwl-using-python-project)
     - [UI Test 3: CWL, using R script](#ui-test-3-cwl-using-r-script)
-
 ## Prerequisites 
 
 >**NB**: The docker-compose.yaml in this project uses profiles and therefore
@@ -356,7 +364,26 @@ database authentication, used by Airflow.
     export _AIRFLOW_WWW_USER_PASSWORD=airflow
 
 More advanced options are listed in the 
-[appendix](#Full list of variables available for overriding via export)
+[appendix](#full-list-of-available-environment-variables)
+                                                             
+### Managing Conda environments
+
+It is possible
+
+### Controlling installation of R packages
+
+#### Using Conda environment
+
+Normally, R packages are installed through 
+[Conda environments](#managing-conda-environments). Just make sure 
+the default environment contains all necessary dependencies.
+
+#### Installing from GitHub
+
+R Packages listed in [r-github-packages.txt](r-github-packages.txt) are
+installed directly from GitHub (see [install_conda script](install_conda.sh)).
+Add any packages you need to this file. Make sure, that there is an 
+end-of-line at the end of the file.
 
 ## Building Containers
 
