@@ -105,7 +105,7 @@ to use plain text progress output (only during build)
 > you must completely rebuild containers, clearing the cache. Use 
 > the following command:
 
-    docker-compose down && docker-compose build --no-cache
+    docker-compose down && docker-compose --env-file ./.env build --no-cache
 
 
 ## Copying DAGs to Airflow folder
