@@ -1,5 +1,19 @@
 # Some useful commands:
 
+
+<!-- toc -->
+
+- [To view logs of the running containers:](#to-view-logs-of-the-running-containers)
+- [To attach to the started container (bash)](#to-attach-to-the-started-container-bash)
+- [Attach to a container when it does not start](#attach-to-a-container-when-it-does-not-start)
+- [To stop all your containers:](#to-stop-all-your-containers)
+- [To delete all images and containers:](#to-delete-all-images-and-containers)
+- [To delete PostgreSQL volumes](#to-delete-postgresql-volumes)
+- [Upgrade Airflow Database](#upgrade-airflow-database)
+- [Create Airflow user](#create-airflow-user)
+
+<!-- tocstop -->
+
 ## To view logs of the running containers:
       usage:
         docker-compose logs {container_name}

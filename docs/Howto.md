@@ -1,5 +1,16 @@
 # Howto
-   
+
+## Table of Contents
+<!-- toc -->
+
+- [Deployment Steps](#deployment-steps)
+- [Building Containers](#building-containers)
+  * [Docker build command](#docker-build-command)
+  * [Rebuilding the Containers](#rebuilding-the-containers)
+- [Copying DAGs to Airflow folder](#copying-dags-to-airflow-folder)
+
+<!-- tocstop -->
+
 For a simple quick start with the most common options for test 
 environment see the [Quick Start](../README.md#quick-start) section
 of README. It will allow you to quickly crete an environment

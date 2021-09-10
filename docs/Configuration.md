@@ -1,4 +1,38 @@
 # Configuration Guide
+                                   
+## Table of Contents
+
+<!-- toc -->
+
+- [What can be configured](#what-can-be-configured)
+- [Selecting base configuration.](#selecting-base-configuration)
+- [Controlling Conda environments](#controlling-conda-environments)
+  * [Setting Conda environment used during workflow executions](#setting-conda-environment-used-during-workflow-executions)
+  * [Managing multiple Conda environments](#managing-multiple-conda-environments)
+- [Configuring installation of third-party requirements](#configuring-installation-of-third-party-requirements)
+  * [Python requirements](#python-requirements)
+  * [R libraries](#r-libraries)
+- [Configuring user projects](#configuring-user-projects)
+  * [Python Projects](#python-projects)
+  * [Enforcing order for installation of user Python Projects](#enforcing-order-for-installation-of-user-python-projects)
+  * [R Projects](#r-projects)
+- [Configure Git submodules](#configure-git-submodules)
+- [Overriding BASE_URL](#overriding-base_url)
+- [Airflow admin username and password](#airflow-admin-username-and-password)
+- [Configurations related to PostgreSQL](#configurations-related-to-postgresql)
+  * [When you need to change defaults](#when-you-need-to-change-defaults)
+  * [Configuring PostgreSQL Server](#configuring-postgresql-server)
+    + [Create database and user for Airflow](#create-database-and-user-for-airflow)
+    + [Configure PostgreSQL to authenticate Airflow user](#configure-postgresql-to-authenticate-airflow-user)
+  * [Tell Airflow how to authenticate with PostgreSQL](#tell-airflow-how-to-authenticate-with-postgresql)
+    + [Authentication](#authentication)
+    + [Networking](#networking)
+    + [Note for Mac](#note-for-mac)
+- [Overriding default parameters](#overriding-default-parameters)
+  * [Full list of available environment variables](#full-list-of-available-environment-variables)
+  * [Example of .env file. Ready to run containers](#example-of-env-file-ready-to-run-containers)
+
+<!-- tocstop -->
 
 ## What can be configured
 

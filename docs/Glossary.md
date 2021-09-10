@@ -1,5 +1,17 @@
 # Glossary
 
+<!-- toc -->
+
+- [What is CWL?](#what-is-cwl)
+- [What is Airflow](#what-is-airflow)
+- [What is CWL-Airflow](#what-is-cwl-airflow)
+- [What is Docker](#what-is-docker)
+- [What is Docker-compose](#what-is-docker-compose)
+- [What is Conda](#what-is-conda)
+- [What is PostgreSQL](#what-is-postgresql)
+
+<!-- tocstop -->
+
 ### What is CWL?
 
 CWL stands for the [Common Workflow Language](https://www.commonwl.org/) 
@@ -51,4 +63,4 @@ docker-compose to orchestrate all required containers.
 
 ### What is PostgreSQL
 
-[PostgreSQL](https://www.postgresql.org/) 
+[PostgreSQL](https://www.postgresql.org/)

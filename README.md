@@ -80,4 +80,6 @@ You can test the installation as described in
 [Testing the installation](#testing-the-installation) section. All three 
 examples should run in both command-line mode and in Airflow UI.
 
+## Testing 
 
+Testing is described in the [Test Guide](docs/Testing.md).
