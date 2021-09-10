@@ -41,7 +41,7 @@ RUN apt-get update && apt-get install -y curl unzip zip wget ca-certificates pyt
  && ln -s /usr/bin/python3 /usr/bin/python
 
 RUN if [ "$AIRFLOW_CONDA_ENV" == "none" ] ;  \
-        then python3 -m pip install --upgrade pip && install_cwl_airflow.sh && install_projects.sh ; \
+        then echo "Direct installation" && python3 -m pip install --upgrade pip && install_cwl_airflow.sh && install_projects.sh ; \
         else install_conda.sh ; \
     fi
 
