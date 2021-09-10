@@ -27,7 +27,7 @@ x-aliases:
         context: .
         dockerfile: Dockerfile
         args:
-          AIRFLOW_CONDA_ENV: "${CONDA_ENV:-conda_default}"
+          AIRFLOW_CONDA_ENV: "${CONDA_ENV:-none}"
 
   - &airflow_env
       environment:
