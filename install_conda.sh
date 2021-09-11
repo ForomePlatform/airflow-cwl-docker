@@ -30,6 +30,13 @@ conda init
 conda config --set auto_activate_base False
 source ~/.bashrc
 pip3 uninstall -y typing
+echo 'Installing cwl-airflow in the base environment'
+conda activate base
+pushd /cwl-airflow || exit
+pip3 install pathlib
+pip3 install .
+popd || exit
+conda deactivate
 echo 'Installing conda environments'
 cd /dependencies/ || exit
 for cenv_file in $(ls . | grep "yml\|yaml")
