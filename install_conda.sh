@@ -22,13 +22,16 @@ echo "Installing Anaconda"
 echo https_proxy=${https_proxy}   HTTPS_PROXY="${HTTPS_PROXY}"
 wget https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh -O anaconda.sh
 chmod a+x ./anaconda.sh
-./anaconda.sh -b -p ${HOME}/anaconda
+bash ./anaconda.sh -b -p ${HOME}/anaconda
 export PATH=${HOME}/anaconda/condabin:$PATH
-pip3 uninstall -y typing
-cd /dependencies/ || exit
-echo 'Installing conda environments'
+echo "Activating conda"
+eval "$(conda shell.bash hook)"
 conda init
-conda deactivate
+conda config --set auto_activate_base False
+source ~/.bashrc
+pip3 uninstall -y typing
+echo 'Installing conda environments'
+cd /dependencies/ || exit
 for cenv_file in $(ls . | grep "yml\|yaml")
 do
   cenv=${cenv_file%.*}
