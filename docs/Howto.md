@@ -106,7 +106,12 @@ to use plain text progress output (only during build)
 > the following command:
 
     docker-compose down && docker-compose --env-file ./.env build --no-cache
+                             
+### When building goes wrong
+Build the containers with a detailed log. One possible command is:
 
+    export log=build-`date +%Y-%m-%d-%H-%M`.log && date > $log && cat .env >> $log && DOCKER_BUILDKIT=1 BUILDKIT_PROGRESS=plain docker-compose --env-file ./.env  build --no-cache 2>&1 | tee -a $log && date >> $log
+    
 
 ## Copying DAGs to Airflow folder
 
