@@ -17,20 +17,18 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-if [ ! -z "$AIRFLOW_CONDA_ENV" ] ;
+if [ "$AIRFLOW_CONDA_ENV" == "none" ] ;
 then
+        airflow db init
+        airflow db upgrade
+        airflow users create --username $_AIRFLOW_WWW_USER_USERNAME --password $_AIRFLOW_WWW_USER_PASSWORD -r Admin -e $_AIRFLOW_WWW_USER_USERNAME@example.com -f Airflow -l Airflow
+        exec "$@"
+else
     set -e
     export PATH=${HOME}/anaconda/condabin/:$PATH:${HOME}/anaconda/envs/${AIRFLOW_CONDA_ENV}/bin:${HOME}/anaconda/bin
-        conda init bash
-        source /root/.bashrc
         if ! grep -qF 'source activate ${AIRFLOW_CONDA_ENV}' ~/.bashrc; then echo 'source activate ${AIRFLOW_CONDA_ENV} && conda info -e' >> ~/.bashrc && echo added; fi
         conda run --no-capture-output -n ${AIRFLOW_CONDA_ENV} airflow db init
         conda run --no-capture-output -n ${AIRFLOW_CONDA_ENV} airflow db upgrade
         conda run --no-capture-output -n ${AIRFLOW_CONDA_ENV} airflow users create --username $_AIRFLOW_WWW_USER_USERNAME --password $_AIRFLOW_WWW_USER_PASSWORD -r Admin -e $_AIRFLOW_WWW_USER_USERNAME@example.com -f Airflow -l Airflow
         exec conda run --no-capture-output -n ${AIRFLOW_CONDA_ENV} "$@"
-else
-        airflow db init
-        airflow db upgrade
-        airflow users create --username $_AIRFLOW_WWW_USER_USERNAME --password $_AIRFLOW_WWW_USER_PASSWORD -r Admin -e $_AIRFLOW_WWW_USER_USERNAME@example.com -f Airflow -l Airflow
-        exec "$@"
 fi
