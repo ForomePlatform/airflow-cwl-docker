@@ -6,10 +6,10 @@
 
 - [Included examples](#included-examples)
 - [Testing command line mode](#testing-command-line-mode)
-  * [Entering container command line environment](#entering-container-command-line-environment)
   * [Test 1: basic CWL (Hello World)](#test-1-basic-cwl-hello-world)
   * [Test 2: CWL, using python project](#test-2-cwl-using-python-project)
   * [Test 3: CWL, using R script](#test-3-cwl-using-r-script)
+  * [Alternative way to test command line](#alternative-way-to-test-command-line)
 - [Testing Airflow User Interface](#testing-airflow-user-interface)
   * [Preparation](#preparation)
   * [UI Test 1: basic CWL (Hello World)](#ui-test-1-basic-cwl-hello-world)
@@ -33,31 +33,26 @@ The examples should run in both command-line mode (from a terminal)
 and in Airflow UI.
 
 ## Testing command line mode
-### Entering container command line environment
-
-Execute the following command to enter the container:
-
-    docker exec -it webserver bash
-
-> You might need to use sudo to run docker commands:
->
->>    sudo docker exec -it webserver bash
 
 ### Test 1: basic CWL (Hello World)
               
-In the container execute:
+Execute:
 
-    cwl-runner /dependencies/examples/1st-tool.cwl /dependencies/examples/echo-job.yaml
+    docker exec webserver bash -ic 'cwl-runner /dependencies/examples/1st-tool.cwl /dependencies/examples/echo-job.yaml'
 
 Look for the words "Hello World" and a message:
 
     INFO Final process status is success
 
+> You might need to use sudo to run docker commands:
+>
+>>    sudo docker exec webserver bash -ic 'cwl-runner /dependencies/examples/1st-tool.cwl /dependencies/examples/echo-job.yaml' 
+
 ### Test 2: CWL, using python project 
               
-In the container execute:
+Execute:
 
-    cwl-runner /dependencies/examples/pi.cwl --iterations 1000
+    docker exec webserver bash -ic 'cwl-runner /dependencies/examples/pi.cwl --iterations 1000'
 
 Look for the words a message:
 
@@ -69,11 +64,18 @@ Look for the words a message:
     ...
     INFO Final process status is success
 
-### Test 3: CWL, using R script 
-              
-In the container execute:
+> You might need to use sudo to run docker commands:
+>
+>>    sudo docker exec webserver bash -ic 'cwl-runner /dependencies/examples/pi.cwl --iterations 1000'
 
-    cwl-runner /dependencies/examples/rpi.cwl --script /dependencies/r_sample_project/rpi.R --iterations 1000
+### Test 3: CWL, using R script 
+                            
+> This test only works if Conda has been installed. It will fail in "noconda"
+> mode
+
+Execute:
+
+    docker exec webserver bash -ic 'cwl-runner /dependencies/examples/rpi.cwl --script /dependencies/r_sample_project/rpi.R --iterations 1000'
 
 Look for the words a message:
 
@@ -83,6 +85,29 @@ Look for the words a message:
     1000  ->  3.059059 
     ...
     INFO Final process status is success
+
+> You might need to use sudo to run docker commands:
+>
+>>    sudo docker exec webserver bash -ic 'cwl-runner /dependencies/examples/rpi.cwl --script /dependencies/r_sample_project/rpi.R --iterations 1000'
+                                  
+### Alternative way to test command line
+Instead of executing `docker exec webserver` command for each test,
+you can enter the container once and then run all the tests inside 
+the container environment
+
+Execute the following command to enter the container:
+
+    docker exec -it webserver bash
+
+> You might need to use sudo to run docker commands:
+>
+>>    sudo docker exec -it webserver bash
+
+Inside the container, execute the following commands:
+
+    cwl-runner /dependencies/examples/1st-tool.cwl /dependencies/examples/echo-job.yaml
+    cwl-runner /dependencies/examples/pi.cwl --iterations 1000
+    cwl-runner /dependencies/examples/rpi.cwl --script /dependencies/r_sample_project/rpi.R --iterations 1000
 
 
 ## Testing Airflow User Interface

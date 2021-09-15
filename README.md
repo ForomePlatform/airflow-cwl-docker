@@ -52,7 +52,7 @@ connection should take from 5 to 20 minutes depending on your
 Internet speed.
                  
 You can test the installation as described in 
-[Testing the installation](#testing-the-installation) section. The first two 
+[Testing the installation](docs/Testing.md) section. The first two 
 examples should run in both command-line mode and in Airflow UI. 
 The third example requires Conda.
 
@@ -77,7 +77,7 @@ Full sequence of commands to copy and paste:
     docker-compose --env-file ./.env up -d
 
 You can test the installation as described in 
-[Testing the installation](#testing-the-installation) section. All three 
+[Testing the installation](docs/Testing.md) section. All three 
 examples should run in both command-line mode and in Airflow UI.
 
 ## Testing 
