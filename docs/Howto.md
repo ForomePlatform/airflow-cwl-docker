@@ -1,12 +1,14 @@
 # Howto
 
 ## Table of Contents
+
 <!-- toc -->
 
 - [Deployment Steps](#deployment-steps)
 - [Building Containers](#building-containers)
   * [Docker build command](#docker-build-command)
   * [Rebuilding the Containers](#rebuilding-the-containers)
+  * [When building goes wrong](#when-building-goes-wrong)
 - [Copying DAGs to Airflow folder](#copying-dags-to-airflow-folder)
 
 <!-- tocstop -->
