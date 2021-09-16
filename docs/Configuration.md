@@ -377,6 +377,7 @@ to override their default values
 # POSTGRE_SERVER=postgres
 # WEB_SERVER_PORT=8080
 # AIRFLOW__CORE__LOAD_EXAMPLES="False"
+# AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "True"
 ## DAGS_FOLDER -- Environment variable inside container. Do not override if you set DAGS_DIR variable
 # DAGS_FOLDER="/opt/airflow/dags"
 # _AIRFLOW_WWW_USER_USERNAME="airflow"
