@@ -43,7 +43,7 @@ x-aliases:
         _AIRFLOW_DB_UPGRADE: "True"
         _AIRFLOW_WWW_USER_CREATE: "True"
         AIRFLOW__WEBSERVER__ENABLE_PROXY_FIX: "True"
-        AIRFLOW__WEBSERVER__EXPOSE_CONFIG: {${AIRFLOW__WEBSERVER__EXPOSE_CONFIG}:-"True"}
+       AIRFLOW__WEBSERVER__EXPOSE_CONFIG: {${AIRFLOW__WEBSERVER__EXPOSE_CONFIG}:-"True"}
         _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
         _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
         AIRFLOW__WEBSERVER__BASE_URL: ${BASE_URL:-http://localhost:8080}
@@ -92,30 +92,11 @@ services:
     ports:
       - "${WEB_SERVER_PORT:-8080}:8080"
     command: [ "airflow", "webserver" ]
-    #depends_on:
-    #  migrationservice:
-    #    condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
       interval: 30s
       timeout: 4s
       retries: 5
-
-  #migrationservice:
-  #  image: "${AIRFLOW_IMAGE_NAME:-myairflow-conda}"
-  #  <<: *airflow_build_params
-  #  container_name: migrationservice
-  #  restart: on-failure
-  #  user: root
-  #  <<: *airflow_env
-  #  <<: *airflow_volumes
-  #  <<: *common_parameters
-  #  profiles:
-  #    - postgres
-  #  command: [ "migration" ]
-  #  depends_on:
-  #    postgres:
-  #      condition: service_healthy
 
   postgres:
     image: postgres:13
