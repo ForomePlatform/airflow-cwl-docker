@@ -5,8 +5,7 @@ class: Workflow
 inputs:
   url:
     type: string
-    default:
-      valueFrom: "https://aqs.epa.gov/aqsweb/airdata/annual_conc_by_monitor_1990.zip"
+    default: "https://aqs.epa.gov/aqsweb/airdata/annual_conc_by_monitor_1990.zip"
 
 steps:
   download:
