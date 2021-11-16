@@ -23,3 +23,6 @@ should be performed for deployment.
 See [Glossary](Glossary.md) for a short description of concepts
 and tools used by this package.
 
+You should be aware of some [useful commands](UsefulCommands.md).
+
+

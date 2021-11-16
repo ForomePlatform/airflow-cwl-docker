@@ -17,7 +17,9 @@ For a simple quick start with the most common options for test
 environment see the [Quick Start](../README.md#quick-start) section
 of README. It will allow you to quickly crete an environment
 where you can try whether it works for you.
-                   
+
+To keep in mind: a few [useful commands](UsefulCommands.md).
+
 ## Deployment Steps
 
 In order to build and deploy CWL-Airflow in your custom environment
