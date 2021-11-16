@@ -29,7 +29,6 @@ steps:
           type: stderr
       stdout: download.log
       stderr: download.err
-
     in:
       url: url
     out:
@@ -52,7 +51,8 @@ steps:
           type: stderr
       stdout: download.log
       stderr: download.err
-    in: download/data
+    in:
+      download/data
     out:
       - log
       - err
