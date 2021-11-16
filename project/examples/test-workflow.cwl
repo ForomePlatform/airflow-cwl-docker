@@ -44,6 +44,10 @@ steps:
           inputBinding:
             position: 1
       outputs:
+        data:
+          type: File
+          outputBinding:
+            glob: "*.csv"
         log:
           type: stdout
         err:
@@ -53,6 +57,7 @@ steps:
     in:
       zip: download/data
     out:
+      - data
       - log
       - err
 
@@ -66,6 +71,9 @@ outputs:
   download_err:
     type: File
     outputSource: download/err
+  csv:
+    type: File
+    outputSource: unzip/data
   unzip_log:
     type: File
     outputSource: unzip/log
