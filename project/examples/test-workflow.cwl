@@ -11,7 +11,7 @@ steps:
   download:
     run:
       class: CommandLineTool
-      baseCommand: [curl, -L ]
+      baseCommand: [curl, -L , -O]
       inputs:
         url:
           type: string
