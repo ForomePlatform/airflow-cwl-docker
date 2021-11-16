@@ -52,7 +52,7 @@ steps:
       stdout: download.log
       stderr: download.err
     in:
-      download/data
+      zip: download/data
     out:
       - log
       - err
