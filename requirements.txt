@@ -1,4 +1,10 @@
 marko
 paramiko
 sshtunnel
+cwlref-runner
+wheel
+pytz
+psycopg2-binary
 WTForms==2.3.3
+markdown==3.3.3
+sqlalchemy==1.3.23

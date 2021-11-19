@@ -26,7 +26,7 @@ RUN echo "AIRFLOW_CONDA_ENV = $AIRFLOW_CONDA_ENV"
 COPY install_*.sh /usr/bin/
 
 COPY cwl-airflow /cwl-airflow
-COPY requirements.txt /
+COPY requirements.txt /cwl-airflow/
 COPY project /dependencies
 COPY r-* /dependencies/
 
