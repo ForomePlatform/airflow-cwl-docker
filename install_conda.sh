@@ -68,5 +68,7 @@ do
   echo 'exec conda run --no-capture-output -n $CONDA_ENV Rscript "$@"' >> /usr/bin/Rscript
   chmod a+x /usr/bin/Rscript
   conda deactivate
+  echo "Installed: $cenv Conda environment"
+  conda env list
   #exit
 done
