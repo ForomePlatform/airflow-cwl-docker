@@ -18,6 +18,8 @@
 
 <!-- tocstop -->
 
+To keep in mind: a few [useful commands](UsefulCommands.md).
+
 ## Included examples
                        
 This distribution include 3 tests:

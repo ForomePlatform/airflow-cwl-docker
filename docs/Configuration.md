@@ -34,6 +34,8 @@
 
 <!-- tocstop -->
 
+To keep in mind: a few [useful commands](UsefulCommands.md).
+
 ## What can be configured
 
 The following options can be configured:
