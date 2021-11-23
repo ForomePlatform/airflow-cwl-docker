@@ -31,6 +31,7 @@ x-aliases:
 
   - &airflow_env
       environment:
+        AIRFLOW_HOME: /opt/airflow
         AIRFLOW__CORE__EXECUTOR: LocalExecutor
         AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRE_USER:-airflow}:${POSTGRE_PASS:-airflow}@${POSTGRE_SERVER:-postgres}/${POSTGRE_DB:-airflow}
         AIRFLOW__CORE__FERNET_KEY:

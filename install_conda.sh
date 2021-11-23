@@ -35,6 +35,7 @@ conda activate base
 pushd /cwl-airflow || exit
 pip3 install pathlib
 pip3 install .
+pip3 install -r requirements.txt
 popd || exit
 conda deactivate
 echo 'Installing conda environments'
