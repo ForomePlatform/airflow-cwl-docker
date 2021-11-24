@@ -19,6 +19,11 @@
 version: '3.9'
 
 x-aliases:
+  - &proxy_params
+      http_proxy: "${HTTP_PROXY}"
+      https_proxy: "${HTTPS_PROXY}"
+      ftp_proxy: "${FTP_PROXY}"
+      no_proxy: "${NO_PROXY}"
   - &common_parameters
       networks:
       - airflow-cwl-docker
@@ -27,10 +32,12 @@ x-aliases:
         context: .
         dockerfile: Dockerfile
         args:
+          <<: *proxy_params
           AIRFLOW_CONDA_ENV: "${AIRFLOW_CONDA_ENV:-none}"
 
   - &airflow_env
       environment:
+        <<: *proxy_params
         AIRFLOW_HOME: /opt/airflow
         AIRFLOW__CORE__EXECUTOR: LocalExecutor
         AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRE_USER:-airflow}:${POSTGRE_PASS:-airflow}@${POSTGRE_SERVER:-postgres}/${POSTGRE_DB:-airflow}
