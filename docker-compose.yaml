@@ -20,10 +20,10 @@ version: '3.9'
 
 x-aliases:
   - &proxy_params
-      http_proxy: "${HTTP_PROXY}"
-      https_proxy: "${HTTPS_PROXY}"
-      ftp_proxy: "${FTP_PROXY}"
-      no_proxy: "${NO_PROXY}"
+      http_proxy: "${HTTP_PROXY-}"
+      https_proxy: "${HTTPS_PROXY-}"
+      ftp_proxy: "${FTP_PROXY-}"
+      no_proxy: "${NO_PROXY-}"
   - &common_parameters
       networks:
       - airflow-cwl-docker
