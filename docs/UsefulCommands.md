@@ -3,14 +3,15 @@
 
 <!-- toc -->
 
-- [To view logs of the running containers:](#to-view-logs-of-the-running-containers)
-- [To attach to the started container (bash)](#to-attach-to-the-started-container-bash)
-- [Attach to a container when it does not start](#attach-to-a-container-when-it-does-not-start)
-- [To stop all your containers:](#to-stop-all-your-containers)
-- [To delete all images and containers:](#to-delete-all-images-and-containers)
-- [To delete PostgreSQL volumes](#to-delete-postgresql-volumes)
-- [Upgrade Airflow Database](#upgrade-airflow-database)
-- [Create Airflow user](#create-airflow-user)
+- [Some useful commands:](#some-useful-commands)
+  - [To view logs of the running containers:](#to-view-logs-of-the-running-containers)
+  - [To attach to the started container (bash)](#to-attach-to-the-started-container-bash)
+  - [Attach to a container when it does not start](#attach-to-a-container-when-it-does-not-start)
+  - [To stop all your containers:](#to-stop-all-your-containers)
+  - [To delete all images and containers:](#to-delete-all-images-and-containers)
+  - [To delete PostgreSQL volumes](#to-delete-postgresql-volumes)
+  - [Upgrade Airflow Database](#upgrade-airflow-database)
+  - [Create Airflow user](#create-airflow-user)
 
 <!-- tocstop -->
 
@@ -30,7 +31,7 @@
 If a container does not start because of teh startup errors,
 use the following command:
 
-    docker-compose run --entrypoint bash webserver
+    docker-compose run --entrypoint="" webserver bash
 
 ## To stop all your containers:
       docker-compose down
