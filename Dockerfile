@@ -49,4 +49,4 @@ COPY entrypoint.sh /usr/bin/
 RUN  chmod a+rx /usr/bin/entrypoint.sh
 ENTRYPOINT [ "entrypoint.sh" ]
 
-ENV PATH=$PATH:/root/anaconda/condabin/:$PATH:/root/anaconda/envs/${CONDA_ENV}/bin:/root/anaconda/bin
+ENV PATH=$PATH:/root/anaconda/condabin/:$PATH:/root/anaconda/envs/${AIRFLOW_CONDA_ENV}/bin:/root/anaconda/bin
